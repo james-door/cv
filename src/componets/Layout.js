@@ -1,4 +1,4 @@
-import React, {useState,useEffect } from 'react'
+import React, {useState,useEffect,Button } from 'react'
 import '../styles/global.css'
 import { Link } from 'gatsby';
 
@@ -36,7 +36,7 @@ if(inBrowser && darkModeState == null){
   
     <div>
         <button onClick={ChangeDarkMode} className='dark-mode-button'>
-      mode
+       
       </button>
       <Link to='/'>Home</Link>
    

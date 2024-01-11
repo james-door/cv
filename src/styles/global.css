@@ -1,6 +1,17 @@
 @import url('https://api.fontshare.com/v2/css?f[]=general-sans@400&f[]=cabinet-grotesk@300&display=swap');
 
 
+
+*{
+    padding:0;
+    margin: 0 auto;
+    font-family: 'General Sans', sans-serif;
+    width: 1200px;
+    /*border: 1px solid red;*/
+}
+
+
+
 /*Light And Dark Mode*/
 [colour-theme="dark"] {
     --code-block-colour: #d04949;
@@ -14,18 +25,24 @@
 --background-colour: white;
 --inline-code-colour: black;
 --inline-code-background: #FDF6E3;
+--dark-mode-button-background-colour: grey; 
+
+}
+/*dark mode button style*/
+.dark-mode-button{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 100;
+    background-image: url('sun.svg');
+}
+.dark-mode-button img{
+    width: fit-content; 
+    height: auto;
 }
 
 
-*{
-    padding:0;
-    margin: 0 auto;
-    font-family: 'General Sans', sans-serif;
-    width: 1200px;
-    /*border: 1px solid red;*/
 
-
-}
 body{
     background-color: var(--background-colour);
 }
@@ -90,14 +107,7 @@ body{
   color:var(--inline-code-colour) !important;
 }
 
-/*dark mode button style*/
-.dark-mode-button{
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: fit-content; 
-    z-index: 100;
-}
+
 
 
 
