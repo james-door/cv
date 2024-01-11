@@ -1,0 +1,1 @@
+{"version":3,"file":"component---src-pages-about-js-0c5a12096b7c3c9cef12.js","mappings":"wMAEe,SAASA,IACtB,OACE,2BAAK,MAET,C","sources":["webpack://gatsby-starter-hello-world/./src/pages/about.js"],"sourcesContent":["import React from 'react'\n\nexport default function abouts() {\n  return (\n    <div>sas</div>\n  )\n}\n"],"names":["abouts"],"sourceRoot":""}

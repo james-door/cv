@@ -1,0 +1,1 @@
+{"version":3,"file":"component---src-pages-404-js-c5131b022993549b29b3.js","mappings":"uMAEe,SAASA,IACtB,OACE,2BAAK,MAET,C","sources":["webpack://gatsby-starter-hello-world/./src/pages/404.js"],"sourcesContent":["import React from 'react'\n\nexport default function NoPage() {\n  return (\n    <div>404</div>\n  )\n}\n"],"names":["NoPage"],"sourceRoot":""}
