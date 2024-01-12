@@ -2,14 +2,22 @@ import React from 'react'
 import {graphql} from 'gatsby'
 import * as styles from "../styles/project.module.css"
 import Layout from '../componets/Layout'
-import { useState, useEffect } from 'react';
 
-import parse, { domToReact } from 'html-react-parser';
+import parse from 'html-react-parser';
+
+
 
 
 const FileLink = (value) =>{
   value = value.split(' ')[1];
-  const pathAndEmbed = value.split('-');
+  const pathAndEmbed = value.split('__');
+  if(pathAndEmbed.length ===1){
+    return(
+      <>
+      {pathAndEmbed[0]}
+      </>
+    )
+  }
   return(
     <>
     {pathAndEmbed[0] +" - "}

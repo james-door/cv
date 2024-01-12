@@ -11,6 +11,16 @@ module.exports = {
   pathPrefix: "/cv",
   plugins: [
     {
+    resolve: "gatsby-plugin-react-svg",
+    options: {
+      rule: {
+        include: /assets/ // See below to configure properly
+      }
+    }
+  },
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    {
       resolve: `gatsby-source-filesystem`,
       options: {
         // The unique name for each instance
@@ -42,10 +52,9 @@ module.exports = {
       // Access the 'someNumbers' option
       const filePath = parsedOptions.filePath;
       if (filePath) {
-        return language.toUpperCase()+"-"+filePath.path +"-"+filePath.link;
+        return language.toUpperCase()+"__"+filePath.path +"__"+filePath.link+"#L"+parsedOptions.numberLines;
       }
-      // Default class name if 'someNumbers' isn't provided
-      return '';
+      return language.toUpperCase();
     }
         }
       }]

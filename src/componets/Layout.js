@@ -1,46 +1,39 @@
-import React, {useState,useEffect,Button } from 'react'
-import '../styles/global.css'
+import React, { useState, useEffect } from 'react';
 import { Link } from 'gatsby';
+import '../styles/global.css';
+import Icon from "../assets/darkModeSun.svg";
 
+export default function Layout({ children }) {
+  const [darkModeState, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('darkModeState') || 'light';
+    }
+    return 'light';
+  });
 
-
-
-
-
-export default function Layout({children}) {
-const inBrowser = typeof window !== 'undefined';
-
-const [darkModeState,setDarkMode] = useState(inBrowser ? localStorage.getItem('darkModeState') : null);
-useEffect(() => {
-  if (darkModeState !== null) {
+  useEffect(() => {
     document.documentElement.setAttribute('colour-theme', darkModeState);
-  }
-}, [darkModeState]);
+  }, [darkModeState]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !localStorage.getItem('darkModeState')) {
+      localStorage.setItem('darkModeState', 'light');
+    }
+  }, []);
 
+  const changeDarkMode = () => {
+    const newState = darkModeState === 'light' ? 'dark' : 'light';
+    setDarkMode(newState);
+    localStorage.setItem('darkModeState', newState);
+  };
 
-const ChangeDarkMode = ()=>{  
-  const newState = darkModeState === 'light' ? 'dark' : 'light';
-  setDarkMode(newState);
-  localStorage.setItem('darkModeState',newState);
-  console.log(newState);
-}
-
-if(inBrowser && darkModeState == null){
-  localStorage.setItem('darkModeState','light');
-  setDarkMode('light');
-}
-
-
- return (
-  
+  return (
     <div>
-        <button onClick={ChangeDarkMode} className='dark-mode-button'>
-       
+      <button onClick={changeDarkMode} className='dark-mode-button' aria-label="Toggle Dark Mode">
+        <Icon className ='test-style'/>
       </button>
       <Link to='/'>Home</Link>
-   
-        {children}
+      {children}
     </div>
-  )
+  );
 }

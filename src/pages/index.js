@@ -2,7 +2,6 @@ import * as React from "react"
 import Layout from "../componets/Layout"
 import * as styles from "../styles/home.module.css"
 import { graphql,Link} from "gatsby"
-import { useEffect } from "react"
 
 
 

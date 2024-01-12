@@ -6,7 +6,6 @@
     padding:0;
     margin: 0 auto;
     font-family: 'General Sans', sans-serif;
-    width: 1200px;
     /*border: 1px solid red;*/
 }
 
@@ -18,33 +17,60 @@
     --background-colour: rgb(147, 147, 147);
     --inline-code-colour: white;
     --inline-code-background: black;
-}
+    --dark-mode-button-colour: rgb(93, 164, 159); 
 
+}
 [colour-theme="light"] {
 --code-block-colour: #f7df1e;
 --background-colour: white;
 --inline-code-colour: black;
 --inline-code-background: #FDF6E3;
---dark-mode-button-background-colour: grey; 
+--dark-mode-button-colour: rgb(130, 130, 130); 
+}
+
+
+
+/*dark mode button style*/
+.dark-mode-button {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 100;
+    background-image: url(../assets/darkModeSun.svg);
+    width: 5rem; /* Adjust to match the size of your SVG */
+    height: 5rem; /* Adjust to match the size of your SVG */
+    background-color: transparent;
+    cursor: pointer;
+    transition:  transform 0.3s;
+    transition-timing-function: ease-out;
+}
+.dark-mode-button:hover {
+    transform: scale(1.2);
+}
+.test-style{
+    stroke: var(--dark-mode-button-colour);
 
 }
-/*dark mode button style*/
-.dark-mode-button{
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    z-index: 100;
-    background-image: url('sun.svg');
+
+/*
+.grvsc-container[data-language]::before{
+    content: attr(data-language);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #f7df1e;
 }
-.dark-mode-button img{
-    width: fit-content; 
-    height: auto;
-}
+*/
 
 
 
 body{
     background-color: var(--background-colour);
+    width: 1200px;
+
 }
 
 
@@ -56,9 +82,10 @@ body{
     width:  600px;
     margin-top: 0rem; 
     margin-bottom: 1rem; 
-    /*overflow: hidden !important;*/
-
 }
+
+
+
 .grvsc-container code{
     width: 600px;
 }
@@ -67,34 +94,11 @@ body{
 }
 .grvsc-gutter-pad{
     width: 0px;
-    height: 0px;
 }
-
-/*Styling for the langauge in the code block*/
-.grvsc-code{
-    position: relative;
-}
-.grvsc-container::before {
-    width: 100%;
-    content: 'ss';
-    position: absolute;
-    top: -10px;
-    background: var(--code-block-colour);
-    background-color: #f7df1e;
-    transform: translate(0,-23px);
-    right: 0;
-    left: 0;
-    text-align:justify;
-    z-index: 1000;
-}
-
-
-
-
 :root{
-    /*--grvsc-padding-right: 10px;*/
     --grvsc-border-radius: 10px;
     --grvsc-padding-top: 2rem;
+    --grvsc-padding-bottom: 0rem;
 }
 
 
