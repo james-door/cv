@@ -3,6 +3,7 @@ import { Link } from 'gatsby';
 import '../styles/global.css';
 import Icon from "../assets/darkModeSun.svg";
 
+
 export default function Layout({ children }) {
   const [darkModeState, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {

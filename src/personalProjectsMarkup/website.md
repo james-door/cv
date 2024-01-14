@@ -5,6 +5,7 @@ URLslug: projects/website
 
 # The Website
 ## Component Modules
+### SUBA
 
 In traditional CSS, styles are defined globally, meaning any style rule can potentially affect any
 element in the HTML document if the selectors match. Gatsby uses [CSS Modules](https://github.com/css-modules/css-modules)  
@@ -34,9 +35,13 @@ This Creates the css code
 ```
 
 ## Markdown
+### SUBA
 I wanted to write the project pages in Markdown. In Gatsby we can do this by using node in the gatsby-node.js
+### SUBB
 ## Code Fence
+
 The code fences in the project pages consists of a syntax higlighter and a bar above the code indicating the language and the file path in the project's repiostry. The file path has the link to the github page embedded.
+
 ### Syntax Highlighter 
 For the syntax highlighter I used the [gatsby-remark-vscode](https://www.gatsbyjs.com/plugins/gatsby-remark-vscode/) plugin. This syntax highlighter ... 
 
@@ -66,7 +71,7 @@ Most other syntax highlighters I looked at were client-side. This meant they had
 
 
 ### Bar
-Initially I implemented the bar using the `CSS•::before` selector as is seen in the below code. However, using this method I was only able to incude the langauge and wasn't able to pass other information from the markdown such as the file. Moreover, the bar wouldn't be the right width when there was overflow in the `CSS•:grvsc-container`, such when scrolling you would go past the right edgeo of the bar. Instead I used a HTML parser to insert the bars above every code fence.
+Initially I implemented the bar using the `CSS•::before` selector as is seen in the below code. However, using this method I was only able to incude the langauge and wasn't able to pass other information from the markdown such as the file. Moreover, the bar wouldn't be the right width when there was overflow in the `CSS•grvsc-container`, such when scrolling you would go past the right edgeo of the bar. Instead I used a HTML parser to insert the bars above every code fence.
 
 ```CSS {numberLines}
 .grvsc-container[data-language]::before{
@@ -80,20 +85,46 @@ Initially I implemented the bar using the `CSS•::before` selector as is seen i
     background-color: var(--code-block-colour);
 }
 ```
-One of the features of the [gatsby-remark-vscode](https://www.gatsbyjs.com/plugins/gatsby-remark-vscode/) is the ability to add a custom class to `CSS•:grvsc-container`. This is specified as one of hte plugins options
+One of the features of the [gatsby-remark-vscode](https://www.gatsbyjs.com/plugins/gatsby-remark-vscode/) is the ability to add a custom class to `CSS•grvsc-container`. The custom class is added by specifying the name of the class as the value of the `JS•wrapperClassName` property of the plugin's option object. This class name can optionally be returned by a JS funciton. This function has two useful parameters, `JS•parsedOptions` which allows us to pass a custom object from the markdown and `JS•langauge` which is the language of the code fence. I pass the custom `JS•filePath` object from the markdown which specifies the file path and a link to the Github page. Using this information I set the custom class `CSS•grvsc-container` to contain this information, using `JS•__` as a delimter. Also I appended the `JS•numberLines` property to the Github URL with the fragment identifier #L, which Github uses to allow jumping to a particular line of code.
 
 ```JS {numberLines: 51, filePath: {path:'cv/gatsby-config.js',link: 'https://github.com/james-door/cv/blob/main/gatsby-config.js'}}
         wrapperClassName: ({ parsedOptions, language, markdownNode, node }) => {
-      // Access the 'someNumbers' option
       const filePath = parsedOptions.filePath;
       if (filePath) {
         return language.toUpperCase()+"__"+filePath.path +"__"+filePath.link+"#L"+parsedOptions.numberLines;
       }
       return language.toUpperCase();
     }
-        }
 ```
+To actually create the bar this is done in the tempalte
+
+```JS {numberLines: 29}
+const HtmlManipulator = (htmlContent) => {
+  return parse(htmlContent, {
+    transform(reactNode, domNode, index) {
+      if (domNode.attribs && domNode.attribs.class && domNode.attribs.class.includes('grvsc-container')) {
+      return( 
+        <>
+        <div className={styles.test}>{FileLink(domNode.attribs.class)}</div>
+          {reactNode}  
+        </>
+        );
+      }
+      else{
+        return(<>{reactNode} </>)
+      }
+    },
+  });
+};
+
+```
+
+
+
+
+
 ## Dark Mode
+### Styling
 To enable switching betweeen a dark and light mode I defined the colour properties for every element using CSS custom properties. The switch between light and dark modes is controlled by changing the `CSS•"colour-theme"` attribute. Depending on its value (either `CSS•"light"` or `CSS•"dark"`), different sets of CSS custom properties are applied through attribute selectors
 
 ```CSS {numberLines : 15,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
@@ -129,6 +160,25 @@ if(darkModeState == null){
 
 For the syntax highlighter 
 
+### Button
 
 
-fin
+## In Project Navigaiton 
+In order to make navigation in project pages easier a list of anchors is generated which allows for easier access to `CSS•<h2>` and `CSS•<h3>`. This is done using URL fragments. In order to uniquely identifier all of the `CSS•<h2>` and `CSS•<h3>`elements I use the html-react-parser to transform the elements so they have an ID that is equivalent to the header text. Fragment identfiers must be unique therefore this imposes that each header must have unique data.
+
+```JSX {numberLines: 32, filePath:{path:'cv/src/componets/Layout.js', link:'https://github.com/james-door/cv/blob/main/src/componets/Layout.js'}} 
+    transform(reactNode, domNode) {
+      if (domNode.type === 'tag' && ['h2', 'h3'].includes(domNode.name)){
+        return (
+          React.createElement(
+            domNode.name,
+            { id: domNode.children[0].data},
+            domToReact(domNode.children, {})
+          )
+        );
+      }
+```
+
+To generate the list of anchors I first query 
+
+

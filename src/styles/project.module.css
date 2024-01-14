@@ -37,8 +37,31 @@
 
 }
 
+
+
 .test a{
     color: grey;
+}
+
+.headerNav{
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding-left: 1rem;
+    padding-top: 1rem;
+}
+.headerNav a{
+    text-decoration: none;
+    color: (var(--code-block-colour));
+}
+
+.depth2{
+    list-style-type: none;
+}
+.depth3{
+    margin-left: 1rem;
+    list-style-type: none;
+
 }
 
 

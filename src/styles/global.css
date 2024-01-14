@@ -37,8 +37,8 @@
     right: 1rem;
     z-index: 100;
     background-image: url(../assets/darkModeSun.svg);
-    width: 5rem; /* Adjust to match the size of your SVG */
-    height: 5rem; /* Adjust to match the size of your SVG */
+    width: 5rem; 
+    height: 5rem; 
     background-color: transparent;
     cursor: pointer;
     transition:  transform 0.3s;
