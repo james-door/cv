@@ -1,32 +1,152 @@
-@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400&f[]=cabinet-grotesk@300&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=bespoke-serif@400,700,800&f[]=general-sans@200,300,400,700&display=swap');
 
-
-
-*{
-    padding:0;
-    margin: 0 auto;
-    font-family: 'General Sans', sans-serif;
-    /*border: 1px solid red;*/
-}
-
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
 
 
 /*Light And Dark Mode*/
 [colour-theme="dark"] {
-    --code-block-colour: #d04949;
-    --background-colour: rgb(147, 147, 147);
-    --inline-code-colour: white;
-    --inline-code-background: black;
+    --code-block-colour: #3B2E58;
+    --background-colour: #242525;
+    --inline-code-colour: #C4BDB3;
+    --inline-code-background: #002B36;
     --dark-mode-button-colour: rgb(93, 164, 159); 
-
+    --paragraph-text-colour: #C4BDB3;
+    --header-text-colour: #E3DBCF; 
+    --scroll-bar-colour: #777;
+    --scroll-bar-hover-colour: #a0a0a0;
+    --contact-me-icon-colour: red;
+    --footer-background-colour: #EEEEEE;
 }
 [colour-theme="light"] {
---code-block-colour: #f7df1e;
---background-colour: white;
---inline-code-colour: black;
---inline-code-background: #FDF6E3;
---dark-mode-button-colour: rgb(130, 130, 130); 
+    --code-block-colour: #f7df1e;
+    --background-colour: white;
+    --inline-code-colour: #373737;
+    --inline-code-background: #FDF6E3;
+    --dark-mode-button-colour: rgb(130, 130, 130); 
+    --paragraph-text-colour: #373737;
+    --header-text-colour: black;
+    --scroll-bar-colour: #5f5f5f;
+    --scroll-bar-hover-colour: #7e7e7e;
+    --contact-me-icon-colour: black;
+    --footer-background-colour: #EEEEEE;
 }
+
+html{
+    font-size: 1rem;
+}
+
+*{
+    padding:0;
+    /*border: 1px solid red;*/
+    margin: 0 auto;
+    
+}
+
+.flex-box{
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+}
+
+body{
+    background-color: var(--background-colour);
+    color: var(--paragraph-text-colour);
+    line-height: 1.75;
+    
+}
+
+main{
+    flex: 1 0 auto; /*flex-grow:1 , flex-shrink: 0, flex-basis: auto*/
+}
+
+footer{
+    
+    border-top: 2px solid #DDDDDD;
+    background-color: var(--footer-background-colour);
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+
+}
+
+body a::after{
+    margin: -3px 0;
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: currentColor; /* Use the color of the text */
+    transition: width 0.5s;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%); /* Center the pseudo-element */
+    border-radius: 10px;
+}
+body a:hover::after{
+    width: 100%
+}
+
+
+footer a{
+    flex: 0 0 auto;
+    margin: 0.5rem 0;
+    
+}
+footer svg{
+    width: 50px;
+    height: auto;
+    fill:var(--contact-me-icon-colour)
+}
+
+
+/*Central column style*/
+.column-style{
+    font-family: "General Sans", sans-serif;
+    font-size: 16px;
+    max-width:65ch;
+    min-width: none;
+    padding-inline: 1rem 1rem;
+}
+
+
+/*banner component style*/
+
+.banner-style {
+    text-align: center;
+    position: relative;
+}
+.banner-style::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #EEEEEE;
+    border-radius: 10px;
+
+}
+
+.banner-style h1 {
+    font-size: 3rem;
+    color: rgb(0, 0, 0);
+}
+
+.banner-style h2 {
+    font-size: 1rem;
+    color: grey;
+}
+
+
+
+.banner-style a{
+    text-decoration: none;
+}
+
+
 
 
 
@@ -35,83 +155,84 @@
     position: fixed;
     bottom: 1rem;
     right: 1rem;
-    z-index: 100;
-    background-image: url(../assets/darkModeSun.svg);
+    z-index: 2;
     width: 5rem; 
     height: 5rem; 
     background-color: transparent;
     cursor: pointer;
     transition:  transform 0.3s;
     transition-timing-function: ease-out;
+    stroke: var(--dark-mode-button-colour);
+
 }
 .dark-mode-button:hover {
     transform: scale(1.2);
 }
-.test-style{
-    stroke: var(--dark-mode-button-colour);
 
+
+
+
+/*Properties for code fence*/
+
+pre.grvsc-container{
+    box-sizing: border-box;
 }
 
-/*
-.grvsc-container[data-language]::before{
-    content: attr(data-language);
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    width: 100%;
-    text-align: center;
-    background-color: #f7df1e;
-}
-*/
-
-
-
-body{
-    background-color: var(--background-colour);
-    width: 1200px;
-
-}
-
-
-
-
-
-/*Properties for code block*/
 .grvsc-container{
-    width:  600px;
     margin-top: 0rem; 
     margin-bottom: 1rem; 
+    font-family: 'Source Code Pro', monospace;
+
+
 }
-
-
-
 .grvsc-container code{
-    width: 600px;
+    width: 100%;
 }
 .grvsc-line-number {
     width: 0px;
+    
 }
 .grvsc-gutter-pad{
     width: 0px;
+    display: none;
 }
+
+.custom-inline-code{
+    background-color: var(--inline-code-background) !important;
+    border-radius: 0.5rem;
+    padding: 0 0.2rem;
+}
+.custom-inline-code span{
+  color:var(--inline-code-colour) !important;
+  font-family: 'General Sans';
+}
+
+
+
+
+
 :root{
     --grvsc-border-radius: 10px;
     --grvsc-padding-top: 2rem;
     --grvsc-padding-bottom: 0rem;
 }
 
-
-
-.custom-inline-code{
-    background-color: var(--inline-code-background) !important;
-    border-radius: 0.5rem;
-}
-.custom-inline-code span{
-  color:var(--inline-code-colour) !important;
+::-webkit-scrollbar {
+    width: 0.5rem; 
+    height: 0.5rem;
 }
 
+::-webkit-scrollbar-track {
+    background: #33333300; 
+}
 
+::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-bar-colour); 
+    border-radius: 9999px; 
+    height: 30px;
+}
 
-
-
+/* Optional: Change thumb color when hovered or active */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-bar-hover-colour);
+}

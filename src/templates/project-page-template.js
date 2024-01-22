@@ -30,7 +30,7 @@ const FileLink = (value) =>{
 const HtmlManipulator = (htmlContent) => {
   return parse(htmlContent, {
     transform(reactNode, domNode) {
-      if (domNode.type === 'tag' && ['h2', 'h3'].includes(domNode.name)){
+      if (domNode.type === 'tag' && ['h1', 'h2', 'h3'].includes(domNode.name)){
         return (
           React.createElement(
             domNode.name,
@@ -42,13 +42,13 @@ const HtmlManipulator = (htmlContent) => {
       else if (domNode.attribs && domNode.attribs.class && domNode.attribs.class.includes('grvsc-container')) {
       return( 
         <>
-        <div className={styles.test}>{FileLink(domNode.attribs.class)}</div>
+        <div className={styles.codeFenceBar}>{FileLink(domNode.attribs.class)}</div>
           {reactNode}  
         </>
         );
       }
       else{
-        return(<>{reactNode} </>)
+        return(<>{reactNode}</>)
       }
     },
   });
@@ -64,6 +64,7 @@ export default function PageFormat({data}) {
       <PageNavgiationColumn HeadingData={data.markdownRemark.headings}/>
       <section className={styles.header}>
        {HtmlManipulator(data.markdownRemark.html)}
+       {/*<div dangerouslySetInnerHTML={{__html:data.markdownRemark.html}}/>*/}
       </section>
     </Layout>
   )

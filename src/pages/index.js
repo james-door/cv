@@ -11,7 +11,14 @@ export default function Home({data}) {
 
   const projectList = data.allMarkdownRemark.nodes.map((element,index) => (
     <Link to={element.frontmatter.URLslug} key={element.id}>
-    <li>{element.frontmatter.title}</li>
+    <li>
+      <span className={styles.date}>
+        {element.frontmatter.date}
+      </span>
+      <span>
+      {" " +element.frontmatter.title}
+      </span>
+      </li>
     </Link>
     ))
 
@@ -19,9 +26,14 @@ export default function Home({data}) {
 
     <Layout>
       <section className={styles.header}>
-        <h1>
-          Jimboomba Woods
-        </h1>
+        <h2>
+          About Me
+        </h2>
+        <p>
+          I am in my last year at QUT doing a Computer and Software Systems course. I enjoy learning new API/langauges. 
+          And I am currently intersted in computer graphics. 
+        </p>
+        <h2>Projects: </h2>
         <ol>
           {projectList}
         </ol>
@@ -41,6 +53,7 @@ query ProjectPages {
       frontmatter {
         title
         URLslug
+        date
       }
       id
     }

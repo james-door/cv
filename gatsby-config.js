@@ -9,6 +9,7 @@
  */
 module.exports = {
   pathPrefix: "/cv",
+
   plugins: [
     {
     resolve: "gatsby-plugin-react-svg",
@@ -37,13 +38,12 @@ module.exports = {
           inlineCode: {
             marker: '•',
             className: 'custom-inline-code'
-
           },
           theme:{
             default: 'Solarized Light',
             parentSelector: {
               'html[colour-theme=light]': 'Solarized Light',
-              'html[colour-theme=dark]': 'Dark+ (default dark)',
+              'html[colour-theme=dark]': 'Solarized Dark',
             },
         },
         wrapperClassName: ({ parsedOptions, language, markdownNode, node }) => {

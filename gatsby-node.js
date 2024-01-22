@@ -1,4 +1,6 @@
 const path = require('path');
+const cheerio = require('cheerio');
+
 exports.createPages = async ({graphql,actions})=>{
 
     const {data} = await graphql(`
@@ -24,3 +26,5 @@ exports.createPages = async ({graphql,actions})=>{
 
 
 };
+
+

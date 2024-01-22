@@ -3,9 +3,17 @@
 }
 
 .header h1{
-    font-size: 11.391rem;
+    /*font-size: 11.391rem;*/
+    font-size: 110px;
 }
 
 .header h2{
     font-size: 7.594rem;
 }
+
+.date{
+    background-color: red;
+}
+
+
+
