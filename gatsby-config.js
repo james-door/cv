@@ -7,6 +7,8 @@
 /**
  * @type {import('gatsby').GatsbyConfig}
  */
+
+
 module.exports = {
   pathPrefix: "/cv",
 
@@ -31,10 +33,19 @@ module.exports = {
     {
     resolve: `gatsby-transformer-remark`,
     options: {
-      plugins: [{
+      plugins: [
+        {
+          resolve: `gatsby-remark-images`,
+          options: {
+            maxWidth: 590,
+          }
+        },
+
+        {
         resolve: `gatsby-remark-vscode`,
         options: {
-      
+          extensions: ['cmake-language-support-vscode'],
+
           inlineCode: {
             marker: '•',
             className: 'custom-inline-code'
@@ -46,15 +57,19 @@ module.exports = {
               'html[colour-theme=dark]': 'Solarized Dark',
             },
         },
-        wrapperClassName: ({ parsedOptions, language, markdownNode, node }) => {
-      const filePath = parsedOptions.filePath;
-      if (filePath) {
-        return language.toUpperCase()+"__"+filePath.path +"__"+filePath.link+"#L"+parsedOptions.numberLines;
-      }
-      return language.toUpperCase();
-    }
+         wrapperClassName: ({ parsedOptions, language, markdownNode, node }) => {
+         const filePath = parsedOptions.filePath;
+          if (filePath) {
+             return language.toUpperCase()+"__"+filePath.path +"__"+filePath.link+"#L"+parsedOptions.numberLines;
+          }
+          return language.toUpperCase();
+          }
         }
-      }]
+      }
+
+        
+    
+    ]
     }
   }]
 }

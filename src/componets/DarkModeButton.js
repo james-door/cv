@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Icon from "../assets/darkModeSun.svg";
+import Sun from "../assets/sun.svg";
+import Moon from "../assets/moon.svg"
 export default function DarkModeButton() {
     const [darkModeState, setDarkMode] = useState(() => {
         if (typeof window !== 'undefined') {
@@ -25,7 +26,12 @@ export default function DarkModeButton() {
       };
   return (
     <button onClick={changeDarkMode} className='dark-mode-button'>
-    <Icon/>
+    <span >
+    <div className='circle-left'/>
+    <div className='circle-right'/>
+    <Sun className = 'sun-button'/>
+    <Moon className = 'moon-button'/>
+    </span>
     </button>
   )
 }

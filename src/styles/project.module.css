@@ -70,11 +70,16 @@
 
 
 /*Nav column*/
+@media (max-width: 768px) {
+    .headerNav {
+        display: none;
+    }
+}
 .headerNav{
     position: fixed;
     left: 0;
     top: 0;
-    padding-left: 1rem;
+    padding-left: 2rem;
     padding-top: 2rem;
 
 }
@@ -91,8 +96,9 @@
     height: 100%;
     width: 3px;
     content: '';
-    background-color: #EEEEEE;
+    background-color: var(--dividing-bar-colour);
     border-radius: 10px;
+    margin: 0 0px;
 }
 
 
@@ -101,6 +107,12 @@
     color: var(--pargraph-text-colour);
     position: relative;
 
+}
+
+.headerNav h2{
+    font-size: 1.618rem;
+    font-family: 'Bespoke Serif', serif;
+    color: var(--header-text-colour);
 }
 .headerNav a:hover{
     color:#f5333f;

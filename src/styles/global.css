@@ -15,20 +15,32 @@
     --scroll-bar-colour: #777;
     --scroll-bar-hover-colour: #a0a0a0;
     --contact-me-icon-colour: red;
-    --footer-background-colour: #EEEEEE;
+    --footer-background-colour: #7777;
+    --header-colour: #777777;
+    --dividing-bar-colour: #7777;
+    --dark-mode-button-background-colour: #7777; 
+    --dark-mode-button-colour: white; 
+    --left-circle-dark-mode-background-colour: transparent;
+    --right-circle-dark-mode-background-colour: white;
+
 }
 [colour-theme="light"] {
     --code-block-colour: #f7df1e;
     --background-colour: white;
     --inline-code-colour: #373737;
     --inline-code-background: #FDF6E3;
-    --dark-mode-button-colour: rgb(130, 130, 130); 
     --paragraph-text-colour: #373737;
     --header-text-colour: black;
     --scroll-bar-colour: #5f5f5f;
     --scroll-bar-hover-colour: #7e7e7e;
     --contact-me-icon-colour: black;
-    --footer-background-colour: #EEEEEE;
+    --footer-background-colour: #bbbbbb98;
+    --header-colour: #373737;
+    --dividing-bar-colour: #EEEEEE;
+    --dark-mode-button-colour: white; 
+    --dark-mode-button-background-colour: #bbbbbb98;
+    --left-circle-dark-mode-background-colour: #777777;
+    --right-circle-dark-mode-background-colour: transparent;
 }
 
 html{
@@ -59,19 +71,9 @@ main{
     flex: 1 0 auto; /*flex-grow:1 , flex-shrink: 0, flex-basis: auto*/
 }
 
-footer{
-    
-    border-top: 2px solid #DDDDDD;
-    background-color: var(--footer-background-colour);
-    width: 100%;
-    text-align: center;
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    justify-content: center;
-
+body a{
+    white-space: nowrap; /* Prevents the text from wrapping which breaks underline*/
 }
-
 body a::after{
     margin: -3px 0;
     content: '';
@@ -82,7 +84,7 @@ body a::after{
     position: absolute;
     left: 50%;
     bottom: 0;
-    transform: translateX(-50%); /* Center the pseudo-element */
+    transform: translateX(-50%); 
     border-radius: 10px;
 }
 body a:hover::after{
@@ -90,15 +92,33 @@ body a:hover::after{
 }
 
 
+
+footer{
+    
+    background-color: var(--footer-background-colour);
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+}
+
+
 footer a{
     flex: 0 0 auto;
     margin: 0.5rem 0;
-    
+
 }
+
+footer svg:hover{
+    fill: #f5333f;
+}
+
 footer svg{
-    width: 50px;
-    height: auto;
-    fill:var(--contact-me-icon-colour)
+    max-width: 50px;
+    max-height: 50px;
+    fill: white;
 }
 
 
@@ -107,7 +127,6 @@ footer svg{
     font-family: "General Sans", sans-serif;
     font-size: 16px;
     max-width:65ch;
-    min-width: none;
     padding-inline: 1rem 1rem;
 }
 
@@ -118,6 +137,17 @@ footer svg{
     text-align: center;
     position: relative;
 }
+
+
+.banner-style h1{
+    font-family: 'Bespoke Serif', serif;
+    font-weight: 300;
+    color: var(--header-colour);
+}
+
+
+
+
 .banner-style::after{
     content: '';
     position: absolute;
@@ -125,19 +155,9 @@ footer svg{
     left: 0;
     width: 100%;
     height: 3px;
-    background-color: #EEEEEE;
+    background-color: var(--dividing-bar-colour);
     border-radius: 10px;
 
-}
-
-.banner-style h1 {
-    font-size: 3rem;
-    color: rgb(0, 0, 0);
-}
-
-.banner-style h2 {
-    font-size: 1rem;
-    color: grey;
 }
 
 
@@ -145,10 +165,18 @@ footer svg{
 .banner-style a{
     text-decoration: none;
 }
+.banner-style a::after{
+    content: none;
+}
 
 
 
-
+:root{
+    --grvsc-border-radius: 10px;
+    --grvsc-padding-top: 2rem;
+    --grvsc-padding-bottom: 0rem;
+    --dark-button-scale: 0.7;
+}
 
 /*dark mode button style*/
 .dark-mode-button {
@@ -156,22 +184,87 @@ footer svg{
     bottom: 1rem;
     right: 1rem;
     z-index: 2;
-    width: 5rem; 
-    height: 5rem; 
     background-color: transparent;
+    border-color: transparent;
     cursor: pointer;
-    transition:  transform 0.3s;
-    transition-timing-function: ease-out;
+    fill: var(--dark-mode-button-colour);;
+}
+
+.dark-mode-button span{
+    position: relative;
+    display: flex;
+    background-color: var(--dark-mode-button-background-colour);
+    border-radius: calc(50px*var(--dark-button-scale));
+    width: calc(200px*var(--dark-button-scale));
+    height: calc(100px*var(--dark-button-scale));
+    justify-content: center;
+    align-items: center;
+}
+.moon-button{
+    flex: 1;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 5px 5px;
     stroke: var(--dark-mode-button-colour);
-
-}
-.dark-mode-button:hover {
-    transform: scale(1.2);
 }
 
+.sun-button{
+    flex: 1;
+    margin: 5px 5px;
+    max-width: 100%;
+    max-height: 100%;
+    stroke: var(--dark-mode-button-colour);
+    fill: var(--dark-mode-button-colour);
+    
+
+}
+.circle-left{
+    position: absolute;
+    left: calc(50px*var(--dark-button-scale) - calc(46px*var(--dark-button-scale))); /* Adjusted to keep centered */
+    border-radius: 100%;
+    width: calc(92px*var(--dark-button-scale));
+    height: calc(92px*var(--dark-button-scale));
+    background-color: var(--left-circle-dark-mode-background-colour);
+}
+.circle-right{
+    position: absolute;
+    right: calc(50px*var(--dark-button-scale) - calc(46px*var(--dark-button-scale))); /* Adjusted to keep centered */
+    border-radius: 100%;
+    width: calc(92px*var(--dark-button-scale));
+    height: calc(92px*var(--dark-button-scale));
+    background-color: var(--right-circle-dark-mode-background-colour);
+}
 
 
 
+:root[colour-theme='dark'] .dark-mode-button:hover .sun-button{
+    animation: rotate-sun 4s linear infinite;
+
+}
+@keyframes rotate-sun {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  :root[colour-theme='light'] .dark-mode-button:hover .moon-button{
+    animation: rotate-moon 1.5s linear infinite;
+
+}
+@keyframes rotate-moon {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
 /*Properties for code fence*/
 
 pre.grvsc-container{
@@ -211,11 +304,7 @@ pre.grvsc-container{
 
 
 
-:root{
-    --grvsc-border-radius: 10px;
-    --grvsc-padding-top: 2rem;
-    --grvsc-padding-bottom: 0rem;
-}
+
 
 ::-webkit-scrollbar {
     width: 0.5rem; 

@@ -13,6 +13,11 @@ For the width on the pages I used the `CSS•cv` unit, so that it would be rough
 For Desktop one rule of thumb I found was 45 to 80 characters per line... 
 
 For Mobile one rule of thumb I found was 30-50 characters per line
+
+
+![light](./lightPage.png)
+![dark](./darkPage.png)
+
 ### Headers
 To create contrast between the header and paragraph text the header text colour is darker than the paragraph text colour in light mode and is lighter in dark mode. Moreover, I used a Serif font for the headers and a sans serif font for the paragraph text. I decided to use 4 different text sizes using a golden ratio. Given that the default font size for most browsers is 16 px this when rounding up we get the following
 |Element|Size (px)|Size (rem)|
@@ -264,6 +269,7 @@ The button that toggles between dark and light mode, in the bottom left, is an S
 
 ```
 ## Navigation Column
+### Navigating With Fragments
 In order to make navigation in project pages easier, for each project's page, a list of anchors is generated which facilitates easier access to sections marked as `CSS•<h2>` and `CSS•<h3>`. The list is displayed on the left of the page and, using media queries, it will not be displayed if there is insufficient room. Navigation is achieved using URL fragments. I use the html-react-parser to transform the `CSS•<h2>` and `CSS•<h3>` elements so that each has an ID corresponding to its header text, as seen in the below React code. Fragment identifiers must be unique; thus, each header must have a unique identifier.
 
 ```JSX {numberLines: 32, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}} 
@@ -317,7 +323,7 @@ The navigation column is a React component `JSX•PageNavigationColumn`. The com
 
 ### Selected Header
  I used a useEffect hook to add the listeners `JSX•hashchange` and `JSX•scroll` whenever the the component is mounted. And I remove the listeners when the component is demounted. A header is selected if the the top of the view port goes within 0 to 50 pixels above that header, or if the viewport is above the main header for the page, or if the user uses a fragment identifier to navigate to the header. 
-```JSX {numberLines: 7, filePath: {path: 'cv/src/componets/PageNavigationColumn',link:}}
+```JSX {numberLines: 7, filePath: {path: 'cv/src/componets/PageNavigationColumn',link:'https://github.com/james-door/cv/blob/main/src/componets/PageNavgiationColumn.js'}}
   const currentViewportHeader =() => {
     const elements = document.querySelectorAll('h1[id], h2[id], h3[id]');
     for (let el of elements) {
