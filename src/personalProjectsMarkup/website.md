@@ -1,36 +1,43 @@
 ---
-title: website
+title: Website
 URLslug: projects/website
-date: 19/01/2024
+date: 12/12/2023
 ---
 
 # Project: Website
 ## Design
-For the font size I knew I was going to use `CSS•rem.s` for units..  
-The default font size is most browsers is 16px. For the design I used the ... ratio for the header size..  
-For the width on the pages I used the `CSS•cv` unit, so that it would be roughly 45 characters per line, probs different for..  
+000000000000000000000000000000000000000000000000000000000000000000000000
 
-For Desktop one rule of thumb I found was 45 to 80 characters per line... 
-
-For Mobile one rule of thumb I found was 30-50 characters per line
-
-
-![light](./lightPage.png)
-![dark](./darkPage.png)
-
+### Mobile
+As a rule of thumb cut offs for mobile are..  
+Use media queries to add complexity. For instance when we reach a certain width we add the nav column.
 ### Headers
-To create contrast between the header and paragraph text the header text colour is darker than the paragraph text colour in light mode and is lighter in dark mode. Moreover, I used a Serif font for the headers and a sans serif font for the paragraph text. I decided to use 4 different text sizes using a golden ratio. Given that the default font size for most browsers is 16 px this when rounding up we get the following
+To create contrast between the header and paragraph text the header text colour is darker than the paragraph text colour in light mode and is lighter in dark mode. Moreover, I used a Serif font for the headers and a sans serif font for the paragraph text. I decided to use 4 different text sizes using a golden ratio. Given that the default font size for most browsers is 16 px this when rounding up we get the following sizes
+
 |Element|Size (px)|Size (rem)|
 |-------|---------|----------|
 |p||16||1|
-|h4|26||..|
-|h3|42||..|
-|h2|68||..|
-|h1|110||..|
+|h4|26||1.618|
+|h3|42||2.618|
+|h2|68||4.236|
+|h1|110||6.854|
 
-Using `CSS•rem` units if the user has a browser set size it will maintain the ratio while keeping t
+Using `CSS•rem` units if the user has a browser set default font size which isn't 16px it will maintain the ratio while keeping their custom font size.  
+The goldren ratio is gets quite large when view on mobile. Therefore, I switch ratio when the screen size reaches
+### Body text
+A common rule of thumb I found was to have between 30 and 40 characters per line on mobile
+
+
+
 ### Style
-To create the stlye I used Figma
+In order to plan how I used Figma to create both the [light](https://www.figma.com/file/TRVV95FpmyASq4CEfHJoYc/Untitled?type=design&node-id=0%3A1&mode=design&t=eSDQ7d6SrpmtU8qP-1) and [dark](https://www.figma.com/file/TRVV95FpmyASq4CEfHJoYc/Untitled?type=design&node-id=1-82&mode=design) styles as seen in the below images. 
+```
+![light](./lightPage.png)
+![dark](./darkPage.png)
+```
+
+
+
 ### Global
 To have consisten global styling for the hyperlinks hover I specify 
 
@@ -266,8 +273,9 @@ The button that toggles between dark and light mode, in the bottom left, is an S
 .dark-mode-button:hover {
     transform: scale(1.2);
 }
-
 ```
+
+
 ## Navigation Column
 ### Navigating With Fragments
 In order to make navigation in project pages easier, for each project's page, a list of anchors is generated which facilitates easier access to sections marked as `CSS•<h2>` and `CSS•<h3>`. The list is displayed on the left of the page and, using media queries, it will not be displayed if there is insufficient room. Navigation is achieved using URL fragments. I use the html-react-parser to transform the `CSS•<h2>` and `CSS•<h3>` elements so that each has an ID corresponding to its header text, as seen in the below React code. Fragment identifiers must be unique; thus, each header must have a unique identifier.

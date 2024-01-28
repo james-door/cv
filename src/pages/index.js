@@ -6,20 +6,26 @@ import { graphql,Link} from "gatsby"
 
 
 export default function Home({data}) {
-
+  const formatDate = (date)=>{
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const dateSegments = date.split('/')
+    return(`${((dateSegments[0].length == 1) ? '0' : '') + dateSegments[0]} 
+    ${months[parseInt(dateSegments[1]-1)]} ${dateSegments[2]}`)
+  }
 
 
   const projectList = data.allMarkdownRemark.nodes.map((element,index) => (
-    <Link to={element.frontmatter.URLslug} key={element.id}>
     <li>
-      <span className={styles.date}>
-        {element.frontmatter.date}
+       <span className={styles.date}>
+          {formatDate(element.frontmatter.date) + " "}
       </span>
+    <Link to={element.frontmatter.URLslug} key={element.id}>
       <span>
-      {" " +element.frontmatter.title}
+        {element.frontmatter.title}
       </span>
-      </li>
     </Link>
+    </li>
     ))
 
   return(
@@ -48,14 +54,14 @@ export default function Home({data}) {
 
 export const query = graphql`
 query ProjectPages {
-  allMarkdownRemark {
+  allMarkdownRemark(sort: {frontmatter: {date: ASC}}) {
     nodes {
+      id
       frontmatter {
         title
         URLslug
         date
       }
-      id
     }
   }
 }

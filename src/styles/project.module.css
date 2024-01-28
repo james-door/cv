@@ -3,15 +3,19 @@
 }  
 
 /*Golden Ratio with a body size of 12*/
+
 .header h1{
-    font-size: 6.854rem;
+    
     font-weight: normal;
     font-family: 'Bespoke Serif', serif;
     color:var(--header-text-colour);
+    line-height: 1.1em;
+    font-size: 6.854rem;
+    overflow-wrap: normal;
 }
 
 .header h2{
-    font-size: 4.236rem;
+    font-size: 	4.236rem;
     font-weight: normal;
     font-family: 'Bespoke Serif', serif;
     color: var(--header-text-colour);
@@ -27,24 +31,34 @@
     color:var(--header-text-colour);
 
 }
-
-.header p{
-    overflow-wrap: break-word;
-
+@media (max-width: 690px){
+    .header h1{
+        font-size: 3.157rem;
+    }
+    .header h2{
+        font-size: 2.369rem;
+    }
+    .header h3{
+        font-size: 1.777rem;
+    }
+    .header h4{
+        font-size: 1.333rem;
+    }
 }
 
-.header table{
+
+/* .header table{
     border-collapse: separate;
     border-spacing: 10px 0;
 }
 .header thead{
     padding: 0 15px;
-}
+} */
 
 .header a {
     color: #1188A0;
     text-decoration: none;
-    position: relative; /* Necessary for positioning the pseudo-element */
+    position: relative; 
 }
 
 
@@ -52,7 +66,9 @@
 
 
 /* Code Fence*/
-.codeFenceBar{
+
+
+/* .codeFenceBar{
     position: relative;
     transform: translate(0,20px);
     background-color: var(--code-block-colour);
@@ -61,16 +77,76 @@
     border-top-right-radius: var(--grvsc-border-radius);  
     text-align: center;
     left: 0;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    text-align:center;
+
 }
 
 .codeFenceBar a {
     color: grey;
+    display: block;
+    max-width:100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center; 
+
+
+} 
+*/
+
+
+.codeFenceBar {
+    position: relative;
+    transform: translate(0,20px);
+    background-color: var(--code-block-colour);
+    z-index: 1;
+    border-top-left-radius: var(--grvsc-border-radius);   
+    border-top-right-radius: var(--grvsc-border-radius);  
+    text-align: center;
+    left: 0;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    text-align:center;
+    display: flex; /* Use Flexbox for alignment */
+    align-items: center; /* Center the items vertically */
+    gap: 0.3em;
+}
+
+.codeFenceBar a {
+    color: grey;
+    display: block; /* Treat the link as a block-level element */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: 0; /* Remove margin to eliminate space between items */
+}
+.codeFenceBar a::after{
+    margin: 2px 0; /*underline is closer to link*/
+
+}
+.codeFenceBar span {
+    margin-right: 0; /* Remove margin to eliminate space between items */
+    flex-shrink: 0;
+    
+}
+
+.test{
+    background-color: #f5333f!important;
 }
 
 
 
+
+
+
+
 /*Nav column*/
-@media (max-width: 768px) {
+
+@media (max-width: 1200px) {
     .headerNav {
         display: none;
     }
@@ -81,11 +157,14 @@
     top: 0;
     padding-left: 2rem;
     padding-top: 2rem;
-
+    max-height: 100vh;
+    overflow: auto;
+    
 }
 
 .headerNav ul{
-    padding: 0rem 1rem;
+    
+    padding-left: 1rem;
     position: relative;
 }
 
@@ -100,6 +179,7 @@
     border-radius: 10px;
     margin: 0 0px;
 }
+
 
 
 .headerNav a{
@@ -127,7 +207,10 @@
     margin-left: 2rem;
     list-style-type: none;
     line-height: 2em;
+
+
 }
+
 
 .depth3::before{
     content:'';
@@ -145,8 +228,5 @@
 .selectedHeader{
     color: #f5333f;
 }
-
-
-
 
 

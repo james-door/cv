@@ -1,4 +1,4 @@
-@import url('https://api.fontshare.com/v2/css?f[]=bespoke-serif@400,700,800&f[]=general-sans@200,300,400,700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,700&f[]=bespoke-serif@400,700,800,300,500&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
 
@@ -12,6 +12,7 @@
     --dark-mode-button-colour: rgb(93, 164, 159); 
     --paragraph-text-colour: #C4BDB3;
     --header-text-colour: #E3DBCF; 
+    --scroll-bar-track-colour: #2b2d2d;
     --scroll-bar-colour: #777;
     --scroll-bar-hover-colour: #a0a0a0;
     --contact-me-icon-colour: red;
@@ -31,8 +32,9 @@
     --inline-code-background: #FDF6E3;
     --paragraph-text-colour: #373737;
     --header-text-colour: black;
-    --scroll-bar-colour: #5f5f5f;
+    --scroll-bar-colour: #575757;
     --scroll-bar-hover-colour: #7e7e7e;
+    --scroll-bar-track-colour: #a0a0a0;
     --contact-me-icon-colour: black;
     --footer-background-colour: #bbbbbb98;
     --header-colour: #373737;
@@ -43,10 +45,33 @@
     --right-circle-dark-mode-background-colour: transparent;
 }
 
-html{
-    font-size: 1rem;
+
+
+:root{
+    --grvsc-border-radius: 10px;
+    --grvsc-padding-top: 2rem;
+    --grvsc-padding-bottom: 0rem;
+    --dark-button-scale: 0.7;
 }
 
+
+/*Central column style*/
+.flex-box {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Corrected typo */
+}
+
+.column-style {
+    font-family: "General Sans", sans-serif;
+    font-size: 1rem;
+    max-width: calc(65ch + 2 * 200px * var(--dark-button-scale));
+    width:100%;
+    padding-inline: calc(200px*var(--dark-button-scale) + 0.5rem);
+    box-sizing: border-box; /* Include padding in the element's total width */
+    overflow-wrap: break-word;
+    flex-shrink: 1; /* Allow the item to shrink */
+}
 *{
     padding:0;
     /*border: 1px solid red;*/
@@ -54,11 +79,21 @@ html{
     
 }
 
-.flex-box{
-    display: flex;
-    flex-direction: column;
-    min-height: 100svh;
+@media (max-width: 650px) {
+    .column-style{
+        max-width: calc(35ch + 2 *(100px * var(--dark-button-scale) +0.5rem));
+        padding-inline: calc(100px*var(--dark-button-scale) + 0.5rem) 
+
+    }
+
 }
+
+html{
+    font-size: 1rem;
+}
+
+
+
 
 body{
     background-color: var(--background-colour);
@@ -71,15 +106,17 @@ main{
     flex: 1 0 auto; /*flex-grow:1 , flex-shrink: 0, flex-basis: auto*/
 }
 
+
+/* Underline stlye */
 body a{
-    white-space: nowrap; /* Prevents the text from wrapping which breaks underline*/
+    white-space: nowrap;
 }
 body a::after{
     margin: -3px 0;
     content: '';
     width: 0%;
     height: 2px;
-    background: currentColor; /* Use the color of the text */
+    background: currentColor; 
     transition: width 0.5s;
     position: absolute;
     left: 50%;
@@ -110,6 +147,9 @@ footer a{
     margin: 0.5rem 0;
 
 }
+footer a::after{
+    display: none;
+}
 
 footer svg:hover{
     fill: #f5333f;
@@ -122,16 +162,9 @@ footer svg{
 }
 
 
-/*Central column style*/
-.column-style{
-    font-family: "General Sans", sans-serif;
-    font-size: 16px;
-    max-width:65ch;
-    padding-inline: 1rem 1rem;
-}
 
 
-/*banner component style*/
+/*header component style*/
 
 .banner-style {
     text-align: center;
@@ -141,8 +174,9 @@ footer svg{
 
 .banner-style h1{
     font-family: 'Bespoke Serif', serif;
-    font-weight: 300;
     color: var(--header-colour);
+    font-weight: 300;
+    font-size:2.618rem;
 }
 
 
@@ -154,43 +188,42 @@ footer svg{
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 3px;
+    height: 2px;
     background-color: var(--dividing-bar-colour);
     border-radius: 10px;
 
 }
 
-
-
 .banner-style a{
     text-decoration: none;
 }
 .banner-style a::after{
-    content: none;
-}
+    background-color: #f5333f;
+    height: 2px;
+    margin: 0px 0px;
+    z-index: 2;
+} 
 
 
 
-:root{
-    --grvsc-border-radius: 10px;
-    --grvsc-padding-top: 2rem;
-    --grvsc-padding-bottom: 0rem;
-    --dark-button-scale: 0.7;
-}
 
-/*dark mode button style*/
-.dark-mode-button {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
+
+/* Original dark mode button style */
+ .dark-mode-button {
+    position: sticky;
+    right: 0;
+    bottom: 0.5rem;
     z-index: 2;
     background-color: transparent;
     border-color: transparent;
     cursor: pointer;
-    fill: var(--dark-mode-button-colour);;
-}
+    fill: var(--dark-mode-button-colour);
+    margin-left: auto; 
+    margin-right: 0;   
+} 
 
-.dark-mode-button span{
+/* Original span styles within dark mode button */
+ .dark-mode-button span {
     position: relative;
     display: flex;
     background-color: var(--dark-mode-button-background-colour);
@@ -199,48 +232,74 @@ footer svg{
     height: calc(100px*var(--dark-button-scale));
     justify-content: center;
     align-items: center;
-}
-.moon-button{
+} 
+
+
+
+/* Styles for .moon-button and .sun-button */
+ .moon-button, .sun-button {
     flex: 1;
+    margin: 5px 5px;
     max-width: 100%;
     max-height: 100%;
-    margin: 5px 5px;
     stroke: var(--dark-mode-button-colour);
 }
 
-.sun-button{
-    flex: 1;
-    margin: 5px 5px;
-    max-width: 100%;
-    max-height: 100%;
-    stroke: var(--dark-mode-button-colour);
+.sun-button {
     fill: var(--dark-mode-button-colour);
-    
+} 
 
-}
-.circle-left{
+/* Styles for .circle-left and .circle-right */
+ .circle-left, .circle-right {
     position: absolute;
-    left: calc(50px*var(--dark-button-scale) - calc(46px*var(--dark-button-scale))); /* Adjusted to keep centered */
     border-radius: 100%;
     width: calc(92px*var(--dark-button-scale));
     height: calc(92px*var(--dark-button-scale));
+}
+
+.circle-left {
+    left: calc(50px*var(--dark-button-scale) - calc(46px*var(--dark-button-scale)));
     background-color: var(--left-circle-dark-mode-background-colour);
 }
-.circle-right{
-    position: absolute;
-    right: calc(50px*var(--dark-button-scale) - calc(46px*var(--dark-button-scale))); /* Adjusted to keep centered */
-    border-radius: 100%;
-    width: calc(92px*var(--dark-button-scale));
-    height: calc(92px*var(--dark-button-scale));
-    background-color: var(--right-circle-dark-mode-background-colour);
-}
 
+.circle-right {
+    right: calc(50px*var(--dark-button-scale) - calc(46px*var(--dark-button-scale)));
+    background-color: var(--right-circle-dark-mode-background-colour);
+} 
+
+/* Media query adjust so that it rotated 90 degrees for smaller screen*/
+ @media (max-width: 650px) {
+    .dark-mode-button span {
+        flex-direction: column;
+        width: calc(100px*var(--dark-button-scale));
+        height: calc(200px*var(--dark-button-scale));
+    }
+    .circle-left {
+        top:  calc(50px*var(--dark-button-scale) - calc(46px*var(--dark-button-scale)));
+        background-color: var(--left-circle-dark-mode-background-colour);
+    }
+    
+    .circle-right {
+        bottom: calc(50px*var(--dark-button-scale) - calc(46px*var(--dark-button-scale)));
+        background-color: var(--right-circle-dark-mode-background-colour);
+    }
+}
+@media (max-width: 400px) {
+    :root {
+        --dark-button-scale: 0.3;
+    }
+}
 
 
 :root[colour-theme='dark'] .dark-mode-button:hover .sun-button{
-    animation: rotate-sun 4s linear infinite;
+    animation: rotate-sun 8s linear infinite;
 
 }
+:root[colour-theme='dark'] .dark-mode-button:hover .sun-button{
+    transition: transform 0.5 linear;
+}
+
+
 @keyframes rotate-sun {
     from {
       transform: rotate(0deg);
@@ -250,10 +309,10 @@ footer svg{
     }
   }
 
-  :root[colour-theme='light'] .dark-mode-button:hover .moon-button{
-    animation: rotate-moon 1.5s linear infinite;
-
+:root[colour-theme='light'] .dark-mode-button:hover .moon-button{
+    animation: rotate-moon 3s linear infinite;
 }
+
 @keyframes rotate-moon {
     0% {
         transform: scale(1);
@@ -264,7 +323,9 @@ footer svg{
     100% {
         transform: scale(1);
     }
-}
+} 
+
+
 /*Properties for code fence*/
 
 pre.grvsc-container{
@@ -311,8 +372,9 @@ pre.grvsc-container{
     height: 0.5rem;
 }
 
-::-webkit-scrollbar-track {
-    background: #33333300; 
+::-webkit-scrollbar-track:vertical{
+    background-color: var(--scroll-bar-track-colour);
+
 }
 
 ::-webkit-scrollbar-thumb {
@@ -321,7 +383,7 @@ pre.grvsc-container{
     height: 30px;
 }
 
-/* Optional: Change thumb color when hovered or active */
 ::-webkit-scrollbar-thumb:hover {
     background: var(--scroll-bar-hover-colour);
 }
+

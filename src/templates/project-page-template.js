@@ -14,15 +14,18 @@ const FileLink = (value) =>{
   const pathAndEmbed = value.split('__');
   if(pathAndEmbed.length ===1){
     return(
-      <>
+      <div className='test'>
       {pathAndEmbed[0]}
-      </>
+      </div>
     )
   }
   return(
     <>
-    {pathAndEmbed[0] +" - "}
-    <a href={pathAndEmbed[2]}>{pathAndEmbed[1]}</a>
+    <span>
+        {pathAndEmbed[0] +" -"}
+    </span>
+    <a href={pathAndEmbed[2]}>
+      {pathAndEmbed[1]}</a>
     </>
   )
 };

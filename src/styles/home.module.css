@@ -2,17 +2,32 @@
     align-items: center;
 }
 
-.header h1{
-    /*font-size: 11.391rem;*/
-    font-size: 110px;
+.header a {
+    color: #1188A0;
+    text-decoration: none;
+    position: relative; /* Necessary for positioning the pseudo-element */
+}
+
+.header li{
+    list-style-type: none;
 }
 
 .header h2{
-    font-size: 7.594rem;
+    font-size: 4.236rem;
+    font-family: 'Bespoke Serif', serif;
+    font-weight:900;
+    color:var(--header-text-colour);
+    overflow-wrap: normal;
+}
+@media (max-width: 650px){
+    .header h2{
+        font-size: 3.157rem;
+
+    }
 }
 
 .date{
-    background-color: red;
+    color: #aaa;
 }
 
 
