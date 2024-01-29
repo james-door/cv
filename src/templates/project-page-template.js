@@ -65,7 +65,7 @@ export default function PageFormat({data}) {
   return (
     <Layout>
       <PageNavgiationColumn HeadingData={data.markdownRemark.headings}/>
-      <section className={styles.header}>
+      <section className={styles.projectBody}>
        {HtmlManipulator(data.markdownRemark.html)}
        {/*<div dangerouslySetInnerHTML={{__html:data.markdownRemark.html}}/>*/}
       </section>

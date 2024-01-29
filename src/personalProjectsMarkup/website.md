@@ -6,26 +6,185 @@ date: 12/12/2023
 
 # Project: Website
 ## Design
-000000000000000000000000000000000000000000000000000000000000000000000000
+### Body text
+A common guideline for readability I found was to have between 30 and 40 characters per line on mobile and 45 to 80 characters per line on larger displays. The number of characters per line is limited by the width of the `css•content-column` element which each body element is a child of. The `css•max-width` of the column is calculated using `css•65ch`. Which gives the width required to fit 65 zero characters, which gives approximately 65 characters per line. The `css•max-width` calculation also takes into account the padding on either side of the body content so the dark mode button can fit. 
 
-### Mobile
-As a rule of thumb cut offs for mobile are..  
-Use media queries to add complexity. For instance when we reach a certain width we add the nav column.
+```CSS {numberLines: 65,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
+.content-column {
+    font-family: "General Sans", sans-serif;
+    font-size: 1rem;
+    max-width: calc(65ch + 2 * 200px * var(--dark-button-scale));
+    width:100%;
+    padding-inline: calc(200px*var(--dark-button-scale) + 0.5rem);
+    box-sizing: border-box; 
+    overflow-wrap: break-word;
+    flex-shrink: 1; 
+}
+```
+When the width of the display is below `css•650px` then I change the `css•max-width` to be caclulated using `css•35ch`, which is more readable for smaller displays. Moreover, the padding is adjusted as the dark mode button is flipped from being horizontal to vertical so the body content can have more room.
+
+
+```CSS {numberLines: 82,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
+@media (max-width: 650px) {
+    .content-column{
+        max-width: calc(35ch + 2 *(100px * var(--dark-button-scale) +0.5rem));
+        padding-inline: calc(100px*var(--dark-button-scale) + 0.5rem); 
+    }
+}
+```
+### Navigation bar and button
+The navigation bar on the left of the project pages takes up too much space for small displays. The navigation column has the property `css•position: fixed` so that it will stay fixed as the user navigates the page. Due to this if the vertical margins are small enough it will overlap with the rest of the body. To address  this, I added the below media query which will not display it when the width is equal to or below `css•1200px`. Additionally, when the display is not tall enough or when the browser window is resized, parts of the header may become inaccessible, espeically on longer project pages. To deal with this I added the property `css•overflow: auto` to the navigation bar's class. 
+
+```CSS {numberLines: 122,filePath:{path:'cv/src/styles/project.module.css',link:'https://github.com/james-door/cv/blob/main/src/styles/project.module.css'}}
+@media (max-width: 1200px) {
+    .headerNav {
+        display: none;
+    }
+}
+.headerNav{
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding-left: 2rem;
+    padding-top: 2rem;
+    max-height: 100vh;
+    overflow: auto;
+}
+```
+Unlike the navigation column I want the dark mode button to be present regardless of the type of display and window size. Equivalently to the navigation bar the dark mode button also has a relative position. To avoid the dark mode button overlapping with the rest of the body I added padding to the `css•content-column` calculated from the size of the dark mode button as discussed in [Body text](#Body%20text) section. However, for narrower viewports, the padding required for the full-sized button does not leave sufficient space for the text. At css•max-width: 650px, the media query below changes the dark mode button, halving its width and, as a result, quartering the padding required."
+
+```CSS {numberLines: 265,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
+ @media (max-width: 650px) {
+    .dark-mode-button span {
+        flex-direction: column;
+        width: calc(100px*var(--dark-button-scale));
+        height: calc(200px*var(--dark-button-scale));
+    }
+    .circle-left {
+        top:  calc(50px*var(--dark-button-scale) - calc(46px*var(--dark-button-scale)));
+        background-color: var(--left-circle-dark-mode-background-colour);
+    }
+    
+    .circle-right {
+        bottom: calc(50px*var(--dark-button-scale) - calc(46px*var(--dark-button-scale)));
+        background-color: var(--right-circle-dark-mode-background-colour);
+    }
+}
+```
+For particulary small viewports the horizontal dark mode button is still to wide. In these cases I use a media query to reduce the scale of the button using the custom propertry `css• --dark-button-scale`.
+
+```CSS {numberLines: 282}
+@media (max-width: 400px) {
+    :root {
+        --dark-button-scale: 0.3;
+    }
+}
+```
+
+
+
 ### Headers
 To create contrast between the header and paragraph text the header text colour is darker than the paragraph text colour in light mode and is lighter in dark mode. Moreover, I used a Serif font for the headers and a sans serif font for the paragraph text. I decided to use 4 different text sizes using a golden ratio. Given that the default font size for most browsers is 16 px this when rounding up we get the following sizes
 
-|Element|Size (px)|Size (rem)|
-|-------|---------|----------|
-|p||16||1|
-|h4|26||1.618|
-|h3|42||2.618|
-|h2|68||4.236|
-|h1|110||6.854|
+<table>
+    <caption>Golden Ratio</caption>
+    <thead>
+        <tr>
+            <th>Element</th>
+            <th>Size (px)</th>
+            <th>Size (rem)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>p</td>
+            <td>16</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>h4</td>
+            <td>26</td>
+            <td>1.618</td>
+        </tr>
+        <tr>
+            <td>h3</td>
+            <td>42</td>
+            <td>2.618</td>
+        </tr>
+        <tr>
+            <td>h2</td>
+            <td>68</td>
+            <td>4.236</td>
+        </tr>
+        <tr>
+            <td>h1</td>
+            <td>110</td>
+            <td>6.854</td>
+        </tr>
+    </tbody>
+</table>
 
 Using `CSS•rem` units if the user has a browser set default font size which isn't 16px it will maintain the ratio while keeping their custom font size.  
-The goldren ratio is gets quite large when view on mobile. Therefore, I switch ratio when the screen size reaches
-### Body text
-A common rule of thumb I found was to have between 30 and 40 characters per line on mobile
+The goldren ratio is gets quite large when viewed on smaller dispalys such as mobile. The approach I took to solve this was change to using a perfect fourth ratio when the width of the display is below `CSS•500px`. 
+
+<table>
+    <caption>Perfect Fourth</caption>
+    <thead>
+        <tr>
+            <th>Element</th>
+            <th>Size (px)</th>
+            <th>Size (rem)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>p</td>
+            <td>16</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>h4</td>
+            <td>21</td>
+            <td>1.333</td>
+        </tr>
+        <tr>
+            <td>h3</td>
+            <td>28</td>
+            <td>1.777</td>
+        </tr>
+        <tr>
+            <td>h2</td>
+            <td>38</td>
+            <td>2.369</td>
+        </tr>
+        <tr>
+            <td>h1</td>
+            <td>51</td>
+            <td>3.157</td>
+        </tr>
+    </tbody>
+</table>
+This is switch in ratio is done using the following media query.
+
+```CSS {numberLines: 34, filePath: {path: 'cv/src/styles/project.module.css',link:'https://github.com/james-door/cv/blob/main/src/styles/project.module.css'}}
+@media (max-width: 500px){
+    .header h1{
+        font-size: 3.157rem;
+    }
+    .header h2{
+        font-size: 2.369rem;
+    }
+    .header h3{
+        font-size: 1.777rem;
+    }
+    .header h4{
+        font-size: 1.333rem;
+    }
+}
+```
+
+
+
 
 
 

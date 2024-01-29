@@ -9,7 +9,6 @@
     --background-colour: #242525;
     --inline-code-colour: #C4BDB3;
     --inline-code-background: #002B36;
-    --dark-mode-button-colour: rgb(93, 164, 159); 
     --paragraph-text-colour: #C4BDB3;
     --header-text-colour: #E3DBCF; 
     --scroll-bar-track-colour: #2b2d2d;
@@ -62,15 +61,15 @@
     min-height: 100vh; /* Corrected typo */
 }
 
-.column-style {
+.content-column {
     font-family: "General Sans", sans-serif;
     font-size: 1rem;
     max-width: calc(65ch + 2 * 200px * var(--dark-button-scale));
     width:100%;
     padding-inline: calc(200px*var(--dark-button-scale) + 0.5rem);
-    box-sizing: border-box; /* Include padding in the element's total width */
+    box-sizing: border-box; 
     overflow-wrap: break-word;
-    flex-shrink: 1; /* Allow the item to shrink */
+    flex-shrink: 1; 
 }
 *{
     padding:0;
@@ -80,20 +79,15 @@
 }
 
 @media (max-width: 650px) {
-    .column-style{
+    .content-column{
         max-width: calc(35ch + 2 *(100px * var(--dark-button-scale) +0.5rem));
-        padding-inline: calc(100px*var(--dark-button-scale) + 0.5rem) 
-
+        padding-inline: calc(100px*var(--dark-button-scale) + 0.5rem); 
     }
-
 }
 
 html{
     font-size: 1rem;
 }
-
-
-
 
 body{
     background-color: var(--background-colour);
@@ -106,11 +100,11 @@ main{
     flex: 1 0 auto; /*flex-grow:1 , flex-shrink: 0, flex-basis: auto*/
 }
 
-
 /* Underline stlye */
 body a{
     white-space: nowrap;
 }
+
 body a::after{
     margin: -3px 0;
     content: '';
@@ -124,53 +118,15 @@ body a::after{
     transform: translateX(-50%); 
     border-radius: 10px;
 }
+
 body a:hover::after{
     width: 100%
 }
-
-
-
-footer{
-    
-    background-color: var(--footer-background-colour);
-    width: 100%;
-    text-align: center;
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    justify-content: center;
-}
-
-
-footer a{
-    flex: 0 0 auto;
-    margin: 0.5rem 0;
-
-}
-footer a::after{
-    display: none;
-}
-
-footer svg:hover{
-    fill: #f5333f;
-}
-
-footer svg{
-    max-width: 50px;
-    max-height: 50px;
-    fill: white;
-}
-
-
-
-
-/*header component style*/
-
+/*Header style*/
 .banner-style {
     text-align: center;
     position: relative;
 }
-
 
 .banner-style h1{
     font-family: 'Bespoke Serif', serif;
@@ -178,9 +134,6 @@ footer svg{
     font-weight: 300;
     font-size:2.618rem;
 }
-
-
-
 
 .banner-style::after{
     content: '';
@@ -204,11 +157,39 @@ footer svg{
     z-index: 2;
 } 
 
+/*Footer Style*/
+footer{
+    
+    background-color: var(--footer-background-colour);
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: center;
+}
 
+footer a{
+    flex: 0 0 auto;
+    margin: 0.5rem 0;
 
+}
 
+footer a::after{
+    display: none;
+}
 
-/* Original dark mode button style */
+footer svg:hover{
+    fill: #f5333f;
+}
+
+footer svg{
+    max-width: 50px;
+    max-height: 50px;
+    fill: white;
+}
+
+/*Dark mode button style*/
  .dark-mode-button {
     position: sticky;
     right: 0;
@@ -222,7 +203,6 @@ footer svg{
     margin-right: 0;   
 } 
 
-/* Original span styles within dark mode button */
  .dark-mode-button span {
     position: relative;
     display: flex;
@@ -234,9 +214,6 @@ footer svg{
     align-items: center;
 } 
 
-
-
-/* Styles for .moon-button and .sun-button */
  .moon-button, .sun-button {
     flex: 1;
     margin: 5px 5px;
@@ -249,7 +226,6 @@ footer svg{
     fill: var(--dark-mode-button-colour);
 } 
 
-/* Styles for .circle-left and .circle-right */
  .circle-left, .circle-right {
     position: absolute;
     border-radius: 100%;
@@ -284,6 +260,7 @@ footer svg{
         background-color: var(--right-circle-dark-mode-background-colour);
     }
 }
+
 @media (max-width: 400px) {
     :root {
         --dark-button-scale: 0.3;
@@ -326,8 +303,28 @@ footer svg{
 } 
 
 
-/*Properties for code fence*/
+/*Scroll bar style for Chrome and Edge*/
+::-webkit-scrollbar {
+    width: 0.5rem; 
+    height: 0.5rem;
+}
 
+::-webkit-scrollbar-track:vertical{
+    background-color: var(--scroll-bar-track-colour);
+
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-bar-colour); 
+    border-radius: 9999px; 
+    height: 30px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-bar-hover-colour);
+}
+
+/*Properties for code fence*/
 pre.grvsc-container{
     box-sizing: border-box;
 }
@@ -359,31 +356,5 @@ pre.grvsc-container{
 .custom-inline-code span{
   color:var(--inline-code-colour) !important;
   font-family: 'General Sans';
-}
-
-
-
-
-
-
-
-::-webkit-scrollbar {
-    width: 0.5rem; 
-    height: 0.5rem;
-}
-
-::-webkit-scrollbar-track:vertical{
-    background-color: var(--scroll-bar-track-colour);
-
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--scroll-bar-colour); 
-    border-radius: 9999px; 
-    height: 30px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--scroll-bar-hover-colour);
 }
 

@@ -1,10 +1,4 @@
-.header{
-
-}  
-
-/*Golden Ratio with a body size of 12*/
-
-.header h1{
+.projectBody h1{
     
     font-weight: normal;
     font-family: 'Bespoke Serif', serif;
@@ -14,90 +8,67 @@
     overflow-wrap: normal;
 }
 
-.header h2{
+.projectBody h2{
     font-size: 	4.236rem;
     font-weight: normal;
     font-family: 'Bespoke Serif', serif;
     color: var(--header-text-colour);
 }
-.header h3{
+
+.projectBody h3{
     font-size: 2.618rem;
     font-weight: normal;
     font-family: 'Bespoke Serif', serif;
     color: var(--header-text-colour);
 }
-.header h4{
+
+.projectBody h4{
     font-size: 1.618rem;
     color:var(--header-text-colour);
-
 }
-@media (max-width: 690px){
-    .header h1{
+
+@media (max-width: 500px){
+    .projectBody h1{
         font-size: 3.157rem;
     }
-    .header h2{
+    .projectBody h2{
         font-size: 2.369rem;
     }
-    .header h3{
+    .projectBody h3{
         font-size: 1.777rem;
     }
-    .header h4{
+    .projectBody h4{
         font-size: 1.333rem;
     }
 }
 
-
-/* .header table{
-    border-collapse: separate;
-    border-spacing: 10px 0;
-}
-.header thead{
-    padding: 0 15px;
-} */
-
-.header a {
+.projectBody a {
     color: #1188A0;
     text-decoration: none;
     position: relative; 
 }
 
-
-
-
-
-/* Code Fence*/
-
-
-/* .codeFenceBar{
-    position: relative;
-    transform: translate(0,20px);
-    background-color: var(--code-block-colour);
-    z-index: 1;
-    border-top-left-radius: var(--grvsc-border-radius);   
-    border-top-right-radius: var(--grvsc-border-radius);  
-    text-align: center;
-    left: 0;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    text-align:center;
-
+/*Table style*/
+.projectBody table {
+    --border: 2px solid var(--dividing-bar-colour);
+    border-radius: 10px;
+    border-spacing: 0;
+    border-collapse: separate;
+    border: var(--border);
+    overflow: hidden;
 }
 
-.codeFenceBar a {
-    color: grey;
-    display: block;
-    max-width:100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: center; 
+.projectBody table th:not(:last-child),
+.projectBody table td:not(:last-child) {
+    border-right: var(--border);
+}
 
+.projectBody table th,
+.projectBody table td {
+    padding: 10px;
+}
 
-} 
-*/
-
-
+/* Code Fence*/
 .codeFenceBar {
     position: relative;
     transform: translate(0,20px);
@@ -111,41 +82,35 @@
     margin-left: 0;
     margin-right: 0;
     text-align:center;
-    display: flex; /* Use Flexbox for alignment */
-    align-items: center; /* Center the items vertically */
+    display: flex; 
+    align-items: center; 
     gap: 0.3em;
 }
 
 .codeFenceBar a {
     color: grey;
-    display: block; /* Treat the link as a block-level element */
+    display: block; 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-left: 0; /* Remove margin to eliminate space between items */
+    margin-left: 0; 
 }
 .codeFenceBar a::after{
-    margin: 2px 0; /*underline is closer to link*/
+    margin: 2px 0; 
+    padding-inline: 0px 0px;
 
 }
 .codeFenceBar span {
-    margin-right: 0; /* Remove margin to eliminate space between items */
+    margin-right: 0; 
     flex-shrink: 0;
-    
+    padding-inline: 20px 0px;
 }
 
 .test{
     background-color: #f5333f!important;
 }
 
-
-
-
-
-
-
 /*Nav column*/
-
 @media (max-width: 1200px) {
     .headerNav {
         display: none;
@@ -159,7 +124,6 @@
     padding-top: 2rem;
     max-height: 100vh;
     overflow: auto;
-    
 }
 
 .headerNav ul{
@@ -180,8 +144,6 @@
     margin: 0 0px;
 }
 
-
-
 .headerNav a{
     text-decoration: none;
     color: var(--pargraph-text-colour);
@@ -198,11 +160,11 @@
     color:#f5333f;
 }
 
-
 .depth2{
     list-style-type: none;
     line-height: 2em;
 }
+
 .depth3{
     margin-left: 2rem;
     list-style-type: none;
@@ -210,7 +172,6 @@
 
 
 }
-
 
 .depth3::before{
     content:'';
@@ -223,7 +184,6 @@
 .depth3.selectedHeader::before {
     background-color: #f5333f;
 }
-
 
 .selectedHeader{
     color: #f5333f;

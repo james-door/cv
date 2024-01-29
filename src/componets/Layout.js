@@ -8,7 +8,7 @@ import DarkModeButton from './DarkModeButton.js';
 export default function Layout({ children }) {
   return (
     <div className='flex-box'>
-    <main className = 'column-style'>
+    <main className = 'content-column'>
       {<Banner/>}
       {children}
     </main>
