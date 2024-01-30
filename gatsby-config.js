@@ -60,7 +60,7 @@ module.exports = {
          wrapperClassName: ({ parsedOptions, language, markdownNode, node }) => {
          const filePath = parsedOptions.filePath;
           if (filePath) {
-             return language.toUpperCase()+"__"+filePath.path +"__"+filePath.link+"#L"+parsedOptions.numberLines;
+             return `${language.toUpperCase()}__${filePath.path}__${filePath.link}#L${parsedOptions.numberLines}`;
           }
           return language.toUpperCase();
           }

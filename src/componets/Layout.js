@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'gatsby';
+import React from 'react';
 import '../styles/global.css';
 import Banner from "./Banner.js"
 import ContactBar from './ContactBar.js';

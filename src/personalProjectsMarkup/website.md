@@ -189,70 +189,40 @@ This is switch in ratio is done using the following media query.
 
 
 ### Style
-In order to plan how I used Figma to create both the [light](https://www.figma.com/file/TRVV95FpmyASq4CEfHJoYc/Untitled?type=design&node-id=0%3A1&mode=design&t=eSDQ7d6SrpmtU8qP-1) and [dark](https://www.figma.com/file/TRVV95FpmyASq4CEfHJoYc/Untitled?type=design&node-id=1-82&mode=design) styles as seen in the below images. 
-```
-![light](./lightPage.png)
-![dark](./darkPage.png)
-```
+During the creation of the project pages and home page I planned out the layout and colour scheme for the [light mode project page](https://www.figma.com/file/TRVV95FpmyASq4CEfHJoYc/Untitled?type=design&node-id=0%3A1&mode=design&t=eSDQ7d6SrpmtU8qP-1) and [dark mode project page](https://www.figma.com/file/TRVV95FpmyASq4CEfHJoYc/Untitled?type=design&node-id=1-82&mode=design) . As well as the [light mode home page](https://www.figma.com/file/TRVV95FpmyASq4CEfHJoYc/Portfolio-Website-Deisgn?type=design&node-id=17%3A2&mode=design&t=TizUmRjolGugokDY-1). This was useful as it allowed me to plan out both the light and dark colour schemes more easily as I didn't have to modify any CSS to do so.
+
+![Project Page Light](./images/lightPage.png)
+
+![Project Page Dark](./images/darkPage.png)
+
+![Home Page Light](./images/homepageLight.png)
 
 
+To have consistent global styling for the hyperlinks I specify the following global body selectors. The style doesn't use the default hyperlink decoration but instead reveals an underline which pseudo-element specified using the `CSS•:after` selector. I can create a more specific `CSS•:after` selector with `CSS•display: none` if I want a different hover effect for certian links, such as for images. 
 
-### Global
-To have consisten global styling for the hyperlinks hover I specify 
-
-```CSS {numberLines:10}
+```CSS {numberLines:104,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
+body a{
+    text-decoration: none;
+    white-space: nowrap;
+}
 body a::after{
     margin: -3px 0;
     content: '';
-    display: block;
+    width: 0%;
     height: 2px;
-    background: currentColor; /* Use the color of the text */
+    background: currentColor; 
     transition: width 0.5s;
     position: absolute;
     left: 50%;
     bottom: 0;
-    transform: translateX(-50%); /* Center the pseudo-element */
+    transform: translateX(-50%); 
     border-radius: 10px;
-    width: 100%;
-
 }
 body a:hover::after{
     width: 100%;
 }
-
-
 ```
 
-
-## Component Modules
-### SUBA
-
-In traditional CSS, styles are defined globally, meaning any style rule can potentially affect any
-element in the HTML document if the selectors match. Gatsby uses [CSS Modules](https://github.com/css-modules/css-modules)  
-...  
-For instance the JSX which 
-```jsx {numberLines}
-    <Layout>
-      <section className={styles.header}>
-        <h1>
-          Jimboomba Woods
-        </h1>
-        <ol>
-          {projectList}
-        </ol>
-
-      </section>
-    </Layout>
-```
-...  
-...   
-This Creates the css code
-```css {numberLines}
-.grvsc-line {
-  padding-left: var(--grvsc-padding-left, var(--grvsc-padding-h, 1.5rem));
-  padding-right: var(--grvsc-padding-right, var(--grvsc-padding-h, 1.5rem));
-}
-```
 
 ## Markdown
 ### Generating HTML

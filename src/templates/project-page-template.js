@@ -22,7 +22,7 @@ const FileLink = (value) =>{
   return(
     <>
     <span>
-        {pathAndEmbed[0] +" -"}
+        {`${pathAndEmbed[0]} -`}
     </span>
     <a href={pathAndEmbed[2]}>
       {pathAndEmbed[1]}</a>

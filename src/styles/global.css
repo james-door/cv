@@ -12,9 +12,9 @@
     --paragraph-text-colour: #C4BDB3;
     --header-text-colour: #E3DBCF; 
     --scroll-bar-track-colour: #2b2d2d;
-    --scroll-bar-colour: #777;
-    --scroll-bar-hover-colour: #a0a0a0;
-    --contact-me-icon-colour: red;
+    --scroll-bar-colour: #4c4c4c;
+    --scroll-bar-hover-colour: #777;
+    --contact-me-icon-colour: #E3DBCF;
     --footer-background-colour: #7777;
     --header-colour: #777777;
     --dividing-bar-colour: #7777;
@@ -31,10 +31,10 @@
     --inline-code-background: #FDF6E3;
     --paragraph-text-colour: #373737;
     --header-text-colour: black;
-    --scroll-bar-colour: #575757;
-    --scroll-bar-hover-colour: #7e7e7e;
-    --scroll-bar-track-colour: #a0a0a0;
-    --contact-me-icon-colour: black;
+    --scroll-bar-colour: #777777;
+    --scroll-bar-hover-colour: #4c4c4c;
+    --scroll-bar-track-colour: #C3C6C6;
+    --contact-me-icon-colour: white;
     --footer-background-colour: #bbbbbb98;
     --header-colour: #373737;
     --dividing-bar-colour: #EEEEEE;
@@ -66,7 +66,7 @@
     font-size: 1rem;
     max-width: calc(65ch + 2 * 200px * var(--dark-button-scale));
     width:100%;
-    padding-inline: calc(200px*var(--dark-button-scale) + 0.5rem);
+    padding-inline: calc(200px*var(--dark-button-scale) + 0.8rem);
     box-sizing: border-box; 
     overflow-wrap: break-word;
     flex-shrink: 1; 
@@ -80,8 +80,8 @@
 
 @media (max-width: 650px) {
     .content-column{
-        max-width: calc(35ch + 2 *(100px * var(--dark-button-scale) +0.5rem));
-        padding-inline: calc(100px*var(--dark-button-scale) + 0.5rem); 
+        max-width: calc(35ch + 2 *(100px * var(--dark-button-scale)));
+        padding-inline: calc(100px*var(--dark-button-scale) + 0.8rem); 
     }
 }
 
@@ -103,6 +103,7 @@ main{
 /* Underline stlye */
 body a{
     white-space: nowrap;
+    text-decoration: none;
 }
 
 body a::after{
@@ -120,7 +121,7 @@ body a::after{
 }
 
 body a:hover::after{
-    width: 100%
+    width: 100%;
 }
 /*Header style*/
 .banner-style {
@@ -147,9 +148,7 @@ body a:hover::after{
 
 }
 
-.banner-style a{
-    text-decoration: none;
-}
+
 .banner-style a::after{
     background-color: #f5333f;
     height: 2px;
@@ -180,15 +179,17 @@ footer a::after{
 }
 
 footer svg:hover{
-    fill: #f5333f;
+    fill: #1188A0;
 }
 
-footer svg{
+footer svg {
     max-width: 50px;
     max-height: 50px;
-    fill: white;
+    fill: var(--contact-me-icon-colour); /* Ensure this variable is defined */
+    position: relative; /* Essential for positioning of ::after */
 }
 
+ 
 /*Dark mode button style*/
  .dark-mode-button {
     position: sticky;
@@ -200,7 +201,7 @@ footer svg{
     cursor: pointer;
     fill: var(--dark-mode-button-colour);
     margin-left: auto; 
-    margin-right: 0;   
+    margin-right: 0.6rem;   
 } 
 
  .dark-mode-button span {
@@ -358,3 +359,26 @@ pre.grvsc-container{
   font-family: 'General Sans';
 }
 
+
+
+
+
+span.gatsby-resp-image-wrapper {
+    padding: 10px 0;
+}
+
+a.gatsby-resp-image-link{
+    border: var(--dividing-bar-colour) 3px solid;
+    border-radius: 3px;
+
+}
+
+a.gatsby-resp-image-link:hover{
+    border-color: #1188A0;
+    transition: border-color;
+    transition-duration: 0.5s;
+}
+a.gatsby-resp-image-link:after{
+    display: none;
+
+}

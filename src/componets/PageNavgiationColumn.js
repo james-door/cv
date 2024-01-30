@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState} from 'react';
 import * as styles from '../styles/project.module.css';
 
 export default function PageNavigationColumn(props) {
@@ -20,7 +20,6 @@ export default function PageNavigationColumn(props) {
   ;
   const handleScroll = ()=>{
     const current = currentViewportHeader();
-    console.log(current);
     if(current !==''){
       setActiveHeader(current);
     }

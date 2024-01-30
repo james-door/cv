@@ -4,7 +4,6 @@
 
 .header a {
     color: #1188A0;
-    text-decoration: none;
     position: relative; /* Necessary for positioning the pseudo-element */
 }
 

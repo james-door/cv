@@ -44,7 +44,6 @@
 
 .projectBody a {
     color: #1188A0;
-    text-decoration: none;
     position: relative; 
 }
 
@@ -145,7 +144,6 @@
 }
 
 .headerNav a{
-    text-decoration: none;
     color: var(--pargraph-text-colour);
     position: relative;
 
@@ -190,3 +188,9 @@
 }
 
 
+
+/*Images*/
+
+.projectBody .gatsby-resp-image-link a {
+    display: none;
+}
