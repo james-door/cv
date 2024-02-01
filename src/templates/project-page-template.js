@@ -1,11 +1,11 @@
 import React from 'react'
 import {graphql} from 'gatsby'
 import * as styles from "../styles/project.module.css"
-import Layout from '../componets/Layout'
+import Layout from '../components/Layout'
 
 import parse, { domToReact } from 'html-react-parser';
 
-import PageNavgiationColumn from "../componets/PageNavgiationColumn"
+import PageNavigationColumn from "../components/PageNavigationColumn"
 
 
 
@@ -33,6 +33,7 @@ const FileLink = (value) =>{
 const HtmlManipulator = (htmlContent) => {
   return parse(htmlContent, {
     transform(reactNode, domNode) {
+    
       if (domNode.type === 'tag' && ['h1', 'h2', 'h3'].includes(domNode.name)){
         return (
           React.createElement(
@@ -60,22 +61,18 @@ const HtmlManipulator = (htmlContent) => {
 
 
 export default function PageFormat({data}) {
-
-  
   return (
     <Layout>
-      <PageNavgiationColumn HeadingData={data.markdownRemark.headings}/>
       <section className={styles.projectBody}>
+      <PageNavigationColumn HeadingData={data.markdownRemark.headings}/>
        {HtmlManipulator(data.markdownRemark.html)}
-       {/*<div dangerouslySetInnerHTML={{__html:data.markdownRemark.html}}/>*/}
       </section>
     </Layout>
   )
 }
 
-
 export const query = graphql`
-query PageContnet($slug: String) {
+query PageContent($slug: String) {
   markdownRemark(frontmatter: {URLslug: {eq: $slug}}, html: {}) {
     headings {
       value

@@ -8,16 +8,12 @@ export default function PageNavigationColumn(props) {
     const elements = document.querySelectorAll('h1[id], h2[id], h3[id]');
     for (let el of elements) {
       const rect = el.getBoundingClientRect();
-      if (rect.top > -50 && rect.top < 0) {
+      if (rect.top > -50 && rect.top < 0 || (el.tagName ==='H1' && rect.top > 0)) {
         return el.innerText;
-      }
-      else if(el.tagName ==='H1' && rect.top > 0){
-        return el.innerText
       }
     }
     return activeHeader;
   }
-  ;
   const handleScroll = ()=>{
     const current = currentViewportHeader();
     if(current !==''){
@@ -49,7 +45,8 @@ export default function PageNavigationColumn(props) {
       style = styles.selectedHeader;
     }
     return (
-      <li className={`${styles[`depth${headingList.depth}`]} ${style}`}>
+      
+      <li key={headingList.value.replace(/[^a-zA-Z0-9]/g, '')+"-"+"headingList.depth"} className={`${styles[`depth${headingList.depth}`]} ${style}`} >
         <a href={`#${headingList.value}`}>
           {headingList.value}
         </a>

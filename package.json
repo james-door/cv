@@ -14,7 +14,6 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
     "cmake-language-support-vscode": "file:./local_extensions/josetr.cmake-language-support-vscode-0.0.9",
     "gatsby": "^5.13.0",
     "gatsby-plugin-image": "^3.13.0",

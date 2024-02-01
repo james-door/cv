@@ -5,6 +5,9 @@ date: 12/12/2023
 ---
 
 # Project: Website
+ This page outlines some of the steps I took in creating my portfolio website. I have previously used React in University assignments where I was serving React applications with Express. For this portfolio website I wanted to try [Gatsby](https://www.gatsbyjs.com/) which is mainly used as a static site generator (SSG). When using Gatsby for SSG, static pages are compiled at build-time which means the HTML, CSS, and JavaScript necessary for each page are generated before deployment, rather than being rendered on-the-fly by the server in response to a user's request. 
+
+
 ## Design
 ### Body text
 A common guideline for readability I found was to have between 30 and 40 characters per line on mobile and 45 to 80 characters per line on larger displays. The number of characters per line is limited by the width of the `css•content-column` element which each body element is a child of. The `css•max-width` of the column is calculated using `css•65ch`. Which gives the width required to fit 65 zero characters, which gives approximately 65 characters per line. The `css•max-width` calculation also takes into account the padding on either side of the body content so the dark mode button can fit. 
@@ -33,7 +36,9 @@ When the width of the display is below `css•650px` then I change the `css•ma
 }
 ```
 ### Navigation bar and button
-The navigation bar on the left of the project pages takes up too much space for small displays. The navigation column has the property `css•position: fixed` so that it will stay fixed as the user navigates the page. Due to this if the vertical margins are small enough it will overlap with the rest of the body. To address  this, I added the below media query which will not display it when the width is equal to or below `css•1200px`. Additionally, when the display is not tall enough or when the browser window is resized, parts of the header may become inaccessible, espeically on longer project pages. To deal with this I added the property `css•overflow: auto` to the navigation bar's class. 
+The navigation bar on the left of the project pages takes up too much space for small displays. The navigation column has the property `css•position: fixed` so that it will stay fixed as the user navigates the page. Due to this if the vertical margins are small enough it will overlap with the rest of the body. To address  this, I added the below media query which will not display it when the width is equal to or below `css•1200px`.
+
+ Additionally, when the display is not tall enough or when the browser window is resized, parts of the header may become inaccessible, espeically on longer project pages. To deal with this I added the property `css•overflow: auto` to the navigation bar's class. 
 
 ```CSS {numberLines: 122,filePath:{path:'cv/src/styles/project.module.css',link:'https://github.com/james-door/cv/blob/main/src/styles/project.module.css'}}
 @media (max-width: 1200px) {
@@ -223,18 +228,97 @@ body a:hover::after{
 }
 ```
 
+## Gatsby
+### Page navigation
+When I used React before, I  defined routes using the `jsx•<BrowserRouter>` and `jsx•<Route>` to explicitly map routes to React components. Gatsby simplifies this for fixed routes by automatically creating routes from any React components in the `js•src/pages` directory. We can then navigate to these using the Gatsby `jsx•<Link>` component. In the below code fence is the `jsx•Banner` component which can be seen at the top of the page. Each folder within the `js•src/pages` represents a subroute. There can be at most one `js•index.js` file in the main route and each subroute. In the `jsx•Banner` component I route to the homepage given that the route `jsx•"/"` always routes to the `jsx•index.js` page of the current subroute.
+
+```jsx {numberLines: 4,filePath:{path:'cv/src/components/Banner.js',link:'https://github.com/james-door/cv/blob/main/src/components/Banner.js'}}
+export default function Banner() {
+  return (
+    <div className = 'banner-style'>
+        <Link to="/">
+        <h1 className="highlight-effect">James Wood</h1>
+        </Link>
+    </div>
+  )
+}
+```
+### Plugins
+Plugins are a large part of Gatsby's functionality, there are a number of types of plugins. Source plugins bring in data from external sources. Transformer plugins can process the contents retrieved by the source plugins. And there are a number of other more general types of plugins. Plugins are added within the `js•plugins` array in the `js•gatsby-config.js` file. In the below code fence I add the utility plugin [gatsby-plugin-react-svg](https://www.gatsbyjs.com/plugins/gatsby-plugin-react-svg/), which transforms SVGs stored in `js•/assets` to React components. Which was useful for creating the dark mode [button](#Button) and footer React components.
+
+```JS {numberLines: 15,filePath: {path:'cv/gatsby-config.js',link:'https://github.com/james-door/cv/blob/main/gatsby-config.js'}}
+  plugins: [
+    {
+    resolve: "gatsby-plugin-react-svg",
+    options: {
+      rule: {
+        include: /assets/ 
+      }
+    }
+  },
+```
+
+### GraphQL
+As I discuss in the [Mardown](#Markdown) section I use markdown files, stored locally, to hold the contents of the project pages. As a result I have to access these markdown files to display them to the user. Gatsby handles all data using a single GraphQl node. GraphQL is a query language that can be used to request or mutate data from a server or local source, this is an alternative to sending requests to a REST API using endpoints. 
+
+To access Markdown files within my project, they must be integrated into Gatsby's data layer, making them queryable via GraphQL. Gatsby does this by using plugins. To query local source files I used the plugin [gatsby-source-filesytem](https://www.gatsbyjs.com/plugins/gatsby-source-filesystem/). For each instance of the plugin in specified in the `js•gatsby-config.js` the files in`js•path` are added to the GraphQl node. 
+
+```JS {numberLines: 26,filePath:{path:'cv/gatsby-config.js',link:'https://github.com/james-door/cv/blob/main/gatsby-config.js'}}
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `personalProjectsMarkup`,
+        path: `${__dirname}/src/personalProjectsMarkup/`,
+      },
+    },
+```
+
+
+
 
 ## Markdown
+### Generating Project Pages
+Instead of writing HTML for every project page I instead generate the HTML for the project pages from markdown. This has a number of advantages one of these being I found it easier to write the discussion in markdown than in HTML. 
+Just using the `js•gatsby-source-filesystem` the markdown nodes added to the GraphQl layer are treated just a files. In order to be able to better query the markdown, such as accessing the front matter and importantly transform the markdown into HTML, I used a Gatsby transformer plugin. The plugin [gatsby-transformer-remark](https://www.gatsbyjs.com/plugins/gatsby-transformer-remark/) will interpet any markdown files added to the GraphQl node and transform the body content into HTML.
+
+Gatsby offers a NodeJS environment we can execute code in during the build time in the `js•gatsby-node.js` file. In this file we can query the markdown nodes that the transformer plugin created. In each of the markdown files I store the slug for the page in the frontmatter as `js•URLslug`. For each project page I use a template `js•project-page-template.js` which I discuss in [Generating HTML](#Generating%20HTML).
+
+```js {numberLines,filePath:{path:'cv/gatsby-node.js',link:'https://github.com/james-door/cv/blob/main/gatsby-node.js'}} 
+const path = require('path');
+
+exports.createPages = async ({graphql,actions})=>{
+
+    const {data} = await graphql(`
+    query ProjectPages {
+        allMarkdownRemark {
+          nodes {
+            frontmatter {
+              URLslug
+            }
+          }
+        }
+      }
+    `)
+
+    data.allMarkdownRemark.nodes.forEach(page=>{
+        actions.createPage({
+            path: page.frontmatter.URLslug,
+            component: path.resolve("src/templates/project-page-template.js/"),
+            context: {slug:page.frontmatter.URLslug}
+        })
+        
+    })
+};
+```
+
 ### Generating HTML
-I decided to write the content for the project pages in Markdown. markdown parser->graphql... parses to get information from the markdown such as the headers. the contnet and the front matter..  
-In Gatsby when we export a GraphQL query from a page component Gatsby automatically executes the query during the build process injecting the query result into the pages component's props. In the below code `jsx•query` is exported which injects parsed content into the `jsx•data prop`. I then use the headers to generate the create the [navigation column](#Navigation%20Column) component and parse the markdown into HTML.
+ For each project page I use the template`js•project-page-template.js` to generate it. In Gatsby in an ES6 environment when we export a GraphQL query from a page component Gatsby automatically executes the query during the build process injecting the query result into the pages component's props. In the below code `jsx•query` is exported which injects parsed content into the `jsx•data` prop. I then use the headers to create the [navigation column](#Navigation%20Column) component. 
+ 
 ```jsx {numberLines:59, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}}
 export default function PageFormat({data}) {
-
-  
   return (
     <Layout>
-      <PageNavgiationColumn HeadingData={data.markdownRemark.headings}/>
+      <PageNavigationColumn HeadingData={data.markdownRemark.headings}/>
       <section className={styles.header}>
        {HtmlManipulator(data.markdownRemark.html)}
       </section>
@@ -242,7 +326,7 @@ export default function PageFormat({data}) {
   )
 }
 export const query = graphql`
-query PageContnet($slug: String) { 
+query PageContent($slug: String) { 
   markdownRemark(frontmatter: {URLslug: {eq: $slug}}, html: {}) {
     headings {
       value
@@ -253,46 +337,74 @@ query PageContnet($slug: String) {
 }
 `
 ```
-### Generating the Page
-In Gatsby to generate the page we use gatsby-node.js
+The `jsx•HtmlManipulator` uses the library [html-react-parser](https://www.npmjs.com/package/html-react-parser) to perform processing on the HTML to convert them into React elements. This is not required and I could just use the React attribute `jsx•dangerouslySetInnerHTML` to convert the HTML code, which is transformed by gatsby-transformer-remark, into a format that can be displayed. However, I use this to to insert the [bar](#Bar) above the code fences and also to add an ID to each headers for the [navigation bar](#Navigation%20Bar). This code is currently being run in the browser, ideally this would be run during build time. Given that the html-react-parser supports NodeJS and Gatsby offers the `js•gatsby-node.js` file, but I couldn't get it working.
+
+```JSX
+const HtmlManipulator = (htmlContent) => {
+  return parse(htmlContent, {
+    transform(reactNode, domNode) {
+      if (domNode.type === 'tag' && ['h1', 'h2', 'h3'].includes(domNode.name)){
+        return (
+          React.createElement(
+            domNode.name,
+            { id: domNode.children[0].data},
+            domToReact(domNode.children, {})
+          )
+        );
+      }
+      else if (domNode.attribs && domNode.attribs.class && domNode.attribs.class.includes('grvsc-container')) {
+      return( 
+        <>
+        <div className={styles.codeFenceBar}>{FileLink(domNode.attribs.class)}</div>
+          {reactNode}  
+        </>
+        );
+      }
+      else{
+        return(<>{reactNode}</>)
+      }
+    },
+  });
+};
+```
 
 
-Gatsby we can do this by using node in the gatsby-node.js
-### SUBB
+
 ## Code Fence
 
 The code fences in the project pages consists of a syntax higlighter and a bar above the code indicating the language and the file path in the project's repiostry. The file path has the link to the github page embedded.
 
 ### Syntax Highlighter 
-For the syntax highlighter I used the [gatsby-remark-vscode](https://www.gatsbyjs.com/plugins/gatsby-remark-vscode/) plugin. This syntax highlighter ... 
+I wanted a syntax highlighter to present my code in a more readable fashion. For this, I chose
+[gatsby-remark-vscode](https://www.gatsbyjs.com/plugins/gatsby-remark-vscode/) which is a plugin that extends the functionality of the gatsby-transformer-remark plugin. The plugin modifies the markdown fenced code block adding HTML and CSS to style them. Most other syntax highlighters I looked at were made to run in the browser. This meant they had to be relatively fast and lightweight as they are downloaded and executed whenever the page is loaded. Whereas gatsby-remark-vscode generates the HTML during the build time. Because of this gatsby-remark-vscode opts to use the same code used by Visual Studio Code's syntax highlighter which while larger and slower, performs more accurate syntax highlighting. 
 
-Most other syntax highlighters I looked at were client-side. This meant they had to be realtively fast and lighweight as they are downloaded and executed whenever the page is loaded. [gatsby-remark-vscode](https://www.gatsbyjs.com/plugins/gatsby-remark-vscode/) takes advantage of SSG and generates the HTML in the node.js environment sitting on [gatsby-transformer-remark](https://www.gatsbyjs.com/plugins/gatsby-transformer-remark/). Becuase of this [gatsby-remark-vscode](https://www.gatsbyjs.com/plugins/gatsby-remark-vscode/) opts to use the VS Code's syntax highlighter which while larger and slower peforms more accurate syntax highlighting. The plugin exposes a number of CSS classes that can be used to style the code fences. The main one being `CSS•grvsc-container` which is at the top of the hierarchy.
+The plugin exposes a number of CSS classes that can be used to style the code fences. The main one being `CSS•grvsc-container` which is at the top of the hierarchy. I use this class to set the font, which I used a monospaced font for, which is convetion for code. The rest of the classes in the below code fence adjust the position of the code within its fence.
 
-```CSS {numberLines : 70,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
+```CSS {numberLines : 332,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
 .grvsc-container{
-    width:  600px;
     margin-top: 0rem; 
     margin-bottom: 1rem; 
+    font-family: 'Source Code Pro', monospace;
 }
+
 .grvsc-container code{
-    width: 600px;
+    width: 100%;
 }
+
 .grvsc-line-number {
     width: 0px;
+    
 }
+
 .grvsc-gutter-pad{
     width: 0px;
-}
-:root{
-    --grvsc-border-radius: 10px;
-    --grvsc-padding-top: 2rem;
-    --grvsc-padding-bottom: 0rem;
+    display: none;
 }
 ```
 
 
 ### Bar
-Initially I implemented the bar using the `CSS•::before` selector as is seen in the below CSS. However, using this method I was only able to incude the langauge and wasn't able to pass other information from the markdown such as the file. Moreover, the bar wouldn't be the right width when there was overflow in the `CSS•grvsc-container`, such when scrolling you would go past the right edgeo of the bar. Instead I used a HTML parser to insert the bars above every code fence.
+The syntax highlighter plugin I used came with no options to add an indication of what language or the file of the current code fence. Therefore, I decided to make a bar above the code fence that would display just that. Initially I implemented the bar using the `CSS•::before` selector as is seen in the below CSS.
 
 ```CSS {numberLines}
 .grvsc-container[data-language]::before{
@@ -306,7 +418,9 @@ Initially I implemented the bar using the `CSS•::before` selector as is seen i
     background-color: var(--code-block-colour);
 }
 ```
-One of the features of the [gatsby-remark-vscode](https://www.gatsbyjs.com/plugins/gatsby-remark-vscode/) is the ability to add a custom class to `CSS•grvsc-container`. The custom class is added by specifying the name of the class as the value of the `JS•wrapperClassName` property of the plugin's option object. This class name can optionally be returned by a JS funciton. This function has two useful parameters, `JS•parsedOptions` which allows us to pass a custom object from the markdown and `JS•langauge` which is the language of the code fence. I pass the custom `JS•filePath` object from the markdown which specifies the file path and a link to the Github page. Using this information I set the custom class `CSS•grvsc-container` to contain this information, using `JS•__` as a delimter. Also I appended the `JS•numberLines` property to the Github URL with the fragment identifier #L, which Github uses to allow jumping to a particular line of code.
+ However, using this method I was only able to include the language and wasn't able to pass other information from the markdown such as the file. Moreover, the bar did not always match the correct width when there was overflow in the `CSS•grvsc-container`, such that when scrolling you would go past the right edge of the bar. Instead I used the HTML parser discussed in [Generating HTML](#Generating%20HTML) to insert the bars above every code fence.
+
+One feature of gatsby-remark-vscode allows adding a custom class to `CSS•grvsc-container`. The custom class is added by specifying the name of the class as the value of the `JS•wrapperClassName` property of the plugin's option object. This class name can optionally be returned by a JS function. This function has two useful parameters, `JS•parsedOptions` which allows us to pass a custom object from the markdown and `JS•language` which is the language of the code fence. I pass the custom `JS•filePath` object from the markdown which specifies the file path and a link to the Github page. Using this information I set the custom class `CSS•grvsc-container` to contain this information, using `JS•__` as a delimiter. Also I appended the `JS•numberLines` property to the Github URL with the fragment identifier #L, which Github uses to allow jumping to a particular line of code.
 
 ```JS {numberLines: 51, filePath: {path:'cv/gatsby-config.js',link: 'https://github.com/james-door/cv/blob/main/gatsby-config.js'}}
         wrapperClassName: ({ parsedOptions, language, markdownNode, node }) => {
@@ -317,9 +431,9 @@ One of the features of the [gatsby-remark-vscode](https://www.gatsbyjs.com/plugi
       return language.toUpperCase();
     }
 ```
-To actually create the bar this is done in the tempalte
+To create the bar, I locate DOM nodes with the class jsx•grvsc-container in the template, and above each of these elements, I insert the language and file link. 
 
-```JS {numberLines: 29}
+```jsx {numberLines: 34, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}}
 const HtmlManipulator = (htmlContent) => {
   return parse(htmlContent, {
     transform(reactNode, domNode, index) {
@@ -340,48 +454,106 @@ const HtmlManipulator = (htmlContent) => {
 
 ```
 
-
-
-
-
 ## Dark Mode
 ### Styling
 To enable switching betweeen a dark and light mode I defined the colour properties for every element using CSS custom properties. The switch between light and dark modes is controlled by changing the `CSS•"colour-theme"` attribute. Depending on its value (either `CSS•"light"` or `CSS•"dark"`), different sets of CSS custom properties are applied through attribute selectors
 
-```CSS {numberLines : 15,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
-/*Light And Dark Mode*/
+```CSS {numberLines : 7,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
 [colour-theme="dark"] {
-    --code-block-colour: #d04949;
-    --background-colour: rgb(147, 147, 147);
-    --inline-code-colour: white;
-    --inline-code-background: black;
-    --dark-mode-button-colour: rgb(93, 164, 159); 
+    --code-block-colour: #3B2E58;
+    --background-colour: #242525;
+    --inline-code-colour: #C4BDB3;
+    --inline-code-background: #002B36;
+    --paragraph-text-colour: #C4BDB3;
+    --header-text-colour: #E3DBCF; 
+    --scroll-bar-track-colour: #2b2d2d;
+    --scroll-bar-colour: #4c4c4c;
+    --scroll-bar-hover-colour: #777;
+    --contact-me-icon-colour: #E3DBCF;
+    --footer-background-colour: #7777;
+    --header-colour: #777777;
+    --dividing-bar-colour: #7777;
+    --dark-mode-button-background-colour: #7777; 
+    --dark-mode-button-colour: white; 
+    --left-circle-dark-mode-background-colour: transparent;
+    --right-circle-dark-mode-background-colour: white;
 }
 [colour-theme="light"] {
---code-block-colour: #f7df1e;
---background-colour: white;
---inline-code-colour: black;
---inline-code-background: #FDF6E3;
---dark-mode-button-colour: rgb(130, 130, 130); 
+    --code-block-colour: #f7df1e;
+    --background-colour: white;
+    --inline-code-colour: #373737;
+    --inline-code-background: #FDF6E3;
+    --paragraph-text-colour: #373737;
+    --header-text-colour: black;
+    --scroll-bar-colour: #777777;
+    --scroll-bar-hover-colour: #4c4c4c;
+    --scroll-bar-track-colour: #C3C6C6;
+    --contact-me-icon-colour: white;
+    --footer-background-colour: #bbbbbb98;
+    --header-colour: #373737;
+    --dividing-bar-colour: #EEEEEE;
+    --dark-mode-button-colour: white; 
+    --dark-mode-button-background-colour: #bbbbbb98;
+    --left-circle-dark-mode-background-colour: #777777;
+    --right-circle-dark-mode-background-colour: transparent;
 }
 ```
-CSS custom properties are inherited like other CSS properties. To ensure that every element can inherit the styles, I assigned the `css•colour-theme` attribute to the root element, `html•<html>`. This done when a page is first loaded ss
-```JSX {numberLines,filePath:{path:'github/cv/file1',link:'https://github.com/james-door/cv/blob/main/src/pages/index.js'}}
-const [darkModeState,setDarkMode] = useState(localStorage.getItem('darkModeState'));
+CSS custom properties cascade like other CSS properties. To ensure that every element can inherits the properties, I assigned the `html•colour-theme` attribute to the root element, `html•<html>`. The root element `html•colour-theme` attribute is set to the value of React state varaible `jsx•darkModeState` whenever the page is first loaded or if the value `jsx•darkModeState` is changed. This functionality is achieved using a `jsx•useEffect` hook, in the below code fence.
 
-useEffect(() => {
-  if (darkModeState !== null) {
-    document.documentElement.setAttribute('colour-theme', darkModeState);
-  }
-}, [darkModeState]);
-if(darkModeState == null){
-  localStorage.setItem('darkModeState','light');
-  se
+To store the state of `jsx•darkModeState` between sessions I use the Web Storage API, which I found was easier to use than cookies. The value of `jsx•darkModeState` is initally set using the `jsx•useState` hook where it tries to retrieve the value for a local storage key named `html•darkModeState`. If it fails to do so so it sets the React state variable to `js•"light"`. Such that `js•"light"` is the default value for React state variable.
+
+
+```jsx {numberLines: 5,filePath:{path:'cv/src/components/DarkModeButton.js',link:'https://github.com/james-door/cv/blob/main/src/components/DarkModeButton.js'}}
+    const [darkModeState, setDarkMode] = useState(() => {
+        if (typeof window !== 'undefined') {
+          return localStorage.getItem('darkModeState') || 'light';
+        }
+        return 'light';
+      });
+    
+      useEffect(() => {
+        document.documentElement.setAttribute('colour-theme', darkModeState);
+      }, [darkModeState]);
 ```
 
-The syntax highighter allows usto change style
+The syntax highighter allows me to change between different Visual Studio Code themes. Using the `js•theme` option in the gatsby-remark-vscode plugin 
+
+```JS {numberLines: 53,filePath: {path:'cv/gatsby-config.js',link:'https://github.com/james-door/cv/blob/main/gatsby-config.js'}}
+  theme:{
+            default: 'Solarized Light',
+            parentSelector: {
+              'html[colour-theme=light]': 'Solarized Light',
+              'html[colour-theme=dark]': 'Solarized Dark',
+            },
+        },
+```
+
 
 ### Button
+The dark mode button in the bottom right of the page allow the user to change the value of 
+
+
+```JSX {numberLines: 16,filePath:{path:'cv/src/components/DarkModeButton.js',link:'https://github.com/james-door/cv/blob/main/src/components/DarkModeButton.js'}}}
+  const changeDarkMode = () => {
+    const newState = darkModeState === 'light' ? 'dark' : 'light';
+    setDarkMode(newState);
+    localStorage.setItem('darkModeState', newState);
+  };
+  return (
+    <button onClick={changeDarkMode} className='dark-mode-button'>
+    <span >
+    <div className='circle-left'/>
+    <div className='circle-right'/>
+    <Sun className = 'sun-button'/>
+    <Moon className = 'moon-button'/>
+    </span>
+    </button>
+  )
+```
+
+
+
+
 The button that toggles between dark and light mode, in the bottom left, is an SVG loaded using the Gatsby plugin [gatsby-plugin-react-svg](https://www.gatsbyjs.com/plugins/gatsby-plugin-react-svg). This plugin converts SVG files from a specified directory into importable React components. I specified in the plugin options that this the src/assets directory. The inline stroke attributes was removed from the in the [orignal SVG](https://www.reshot.com/free-svg-icons/item/sun-energy-WL9MVB4TYD/). And set it using the custom property `CSS•--dark-mode-button-colour`. This allowed me to avoiud using the !important property to override the in-line style.
 
 ```CSS {numberLines: 10}
@@ -405,9 +577,20 @@ The button that toggles between dark and light mode, in the bottom left, is an S
 ```
 
 
-## Navigation Column
-### Navigating With Fragments
-In order to make navigation in project pages easier, for each project's page, a list of anchors is generated which facilitates easier access to sections marked as `CSS•<h2>` and `CSS•<h3>`. The list is displayed on the left of the page and, using media queries, it will not be displayed if there is insufficient room. Navigation is achieved using URL fragments. I use the html-react-parser to transform the `CSS•<h2>` and `CSS•<h3>` elements so that each has an ID corresponding to its header text, as seen in the below React code. Fragment identifiers must be unique; thus, each header must have a unique identifier.
+
+
+
+
+
+
+
+
+
+## Navigation Bar
+### Navigating with fragments
+In order to make navigation in project pages easier, for each project's page, a list of anchors is generated. This facilitates easier access to sections marked as `CSS•<h2>` and `CSS•<h3>`. The list is displayed on the left of the page, using media queries, the list is hidden when there is insufficient room. Navigation is achieved using URL fragments.
+
+ I use the html-react-parser to transform the `CSS•<h2>` and `CSS•<h3>` elements so that each has an ID corresponding to its header text, as seen in the below React code. Fragment identifiers must be unique; thus, each header must have a unique identifier. If I felt I needed repeated headers for different depth I could append the depth to the ID.
 
 ```JSX {numberLines: 32, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}} 
     transform(reactNode, domNode) {
@@ -422,19 +605,17 @@ In order to make navigation in project pages easier, for each project's page, a 
       }
 ```
 
-The navigation column is a React component `JSX•PageNavigationColumn`. The component is passed a single prop which is an array of JS objects containing the depth and value for header in the page. Each header is passed to `JSX•FormatHeadingList`. The depth of the header passed determines which CSS module is attatched to the list item element. Moreover, use React state varaible `JSX•activeHeader` I keep track of which header is currently selected, and add the `CSS•selectedHeader` stlye to that header. 
+The navigation column is a React component `JSX•PageNavigationColumn`. The component is passed a single prop that is an array of JS objects containing the depth and value for header in the page. Each header is passed to `JSX•FormatHeadingList`. The depth of the header  is used to dynamically assign a class name to the list item element. Headers of depth 1 are ignored, meaning that the project title isn't included on the navigation bar. Headers of depth 2 and 3 have different styles, to visually differentiate them in the navigation bar. Moreover, using the React state variable `JSX•activeHeader` I keep track of which header is currently selected, and add the `CSS•selectedHeader` style to that header. 
 
-```JSX {numberLines: 4, filePath: {path: 'cv/src/Componets/PageNavigationColumn',link: 'https://github.com/james-door/cv/blob/main/src/componets/PageNavgiationColumn.js'}}
+```JSX {numberLines: 4, filePath: {path: 'cv/src/components/PageNavigationColumn',link: 'https://github.com/james-door/cv/blob/main/src/components/PageNavigationColumn.js'}}
  export default function PageNavigationColumn(props) {
   const [activeHeader, setActiveHeader] = useState('');
                             ...
   const FormatHeadingList = (headingList) => { //L45
     let style = '';
-    //Exclude h1
     if (headingList.depth === 1) {
       return <></>;
     }
-    //If selected use the activeHeader style
     if (headingList.value === activeHeader) {
       style = styles.selectedHeader;
     }
@@ -459,25 +640,20 @@ The navigation column is a React component `JSX•PageNavigationColumn`. The com
 ```
 
 ### Selected Header
- I used a useEffect hook to add the listeners `JSX•hashchange` and `JSX•scroll` whenever the the component is mounted. And I remove the listeners when the component is demounted. A header is selected if the the top of the view port goes within 0 to 50 pixels above that header, or if the viewport is above the main header for the page, or if the user uses a fragment identifier to navigate to the header. 
-```JSX {numberLines: 7, filePath: {path: 'cv/src/componets/PageNavigationColumn',link:'https://github.com/james-door/cv/blob/main/src/componets/PageNavgiationColumn.js'}}
+ I used a `JSX•useEffect` hook to add the listeners `JS•hashchange` and `JS•scroll` whenever the navigation bar component is mounted. And to remove the listeners when the component is unmounted. A header is selected if the top of the viewport goes within 0 to 50 pixels above that header, or if the viewport is above the main header for the page, or if the user uses a fragment identifier to navigate to the header. 
+```JSX {numberLines: 7, filePath: {path: 'cv/src/components/PageNavigationColumn',link:'https://github.com/james-door/cv/blob/main/src/components/PageNavigationColumn.js'}}
   const currentViewportHeader =() => {
     const elements = document.querySelectorAll('h1[id], h2[id], h3[id]');
     for (let el of elements) {
       const rect = el.getBoundingClientRect();
-      if (rect.top > -50 && rect.top < 0) {
+      if (rect.top > -50 && rect.top < 0 || (el.tagName ==='H1' && rect.top > 0)) {
         return el.innerText;
-      }
-      else if(el.tagName ==='H1' && rect.top > 0){
-        return el.innerText
       }
     }
     return activeHeader;
   }
-  ;
   const handleScroll = ()=>{
     const current = currentViewportHeader();
-    console.log(current);
     if(current !==''){
       setActiveHeader(current);
     }
@@ -495,7 +671,6 @@ The navigation column is a React component `JSX•PageNavigationColumn`. The com
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
 ```
 
 

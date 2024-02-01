@@ -13,6 +13,7 @@
     font-weight: normal;
     font-family: 'Bespoke Serif', serif;
     color: var(--header-text-colour);
+    overflow-wrap: normal;
 }
 
 .projectBody h3{
@@ -33,7 +34,7 @@
     }
     .projectBody h2{
         font-size: 2.369rem;
-    }
+    }:before
     .projectBody h3{
         font-size: 1.777rem;
     }

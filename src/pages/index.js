@@ -1,5 +1,5 @@
 import * as React from "react"
-import Layout from "../componets/Layout"
+import Layout from "../components/Layout"
 import * as styles from "../styles/home.module.css"
 import { graphql,Link} from "gatsby"
 
@@ -17,11 +17,11 @@ export default function Home({data}) {
 
 
   const projectList = data.allMarkdownRemark.nodes.map((element,index) => (
-    <li>
+    <li key={element.id}>
        <span className={styles.date}>
           {`${formatDate(element.frontmatter.date)} `}
       </span>
-    <Link to={element.frontmatter.URLslug} key={element.id}>
+    <Link to={element.frontmatter.URLslug} >
       <span>
         {element.frontmatter.title}
       </span>
@@ -37,15 +37,16 @@ export default function Home({data}) {
           About Me
         </h2>
         <p>
+          Hello, my name is James. I enjoy learning about new languages and APIs. Currently,
+          my primary areas of interest lie in web development and computer graphics. 
+        </p>
+        <p>
            I am currently in my final year at QUT, studying Computer and Software Systems.
             Throughout this course, I have gained experience in web development. This 
             inspired me to start creating this website, designed to showcase and detail 
-            some of my personal projects. As I developed the website, I recognized that 
-            there is much more for me to learn about web development. However, I consider
-             the experience I have gained through this process to be valuable.
+            some of my personal projects. 
         </p>
-    
-
+  
         <h2>Projects: </h2>
         <ol>
           {projectList}

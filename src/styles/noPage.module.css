@@ -1,0 +1,16 @@
+.noPage h2{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 50%;
+    text-align: center;
+    font-weight: normal;
+    font-family: 'Bespoke Serif', serif;
+    color:var(--header-text-colour);
+    line-height: 1.1em;
+    font-size: 6.854rem;
+    text-wrap:nowrap;
+
+}
+
+
