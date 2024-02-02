@@ -65,10 +65,24 @@ module.exports = {
           return language.toUpperCase();
           }
         }
-      }
-
-        
-    
+      },  
+    {
+      resolve: `gatsby-plugin-google-gtag`,
+      options: {
+        trackingIds: [
+          "G-4T5VPL1G4Q"
+        ],
+        gtagConfig: {
+          anonymize_ip: false, 
+          cookie_expires: 7776000, 
+        },
+        pluginConfig: {
+          head: false, // Place script in body instead of head to improve loading speed
+          respectDNT: true, // Respects users' Do Not Track setting
+          delayOnRouteUpdate: 0, // No delay on route update
+        },
+      },
+    }
     ]
     }
   }]
