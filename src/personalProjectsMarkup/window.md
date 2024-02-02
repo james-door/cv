@@ -176,16 +176,7 @@ The window is created using the funciton `C++•CreateWindowEx` which takes the 
 
     ShowWindow(windowHandle, SW_SHOW);
 ```
-Even if we have declared the correct prototype for window procedure `C++•lpfnWndProc`
-
-Running this code currently would cause an Win32 error 
-
-
-
-
-I call the above code from WinMain. However I could use wWinMain if I needed lpCmdLine to pass a wide string.
-
-
+Even if we have declared the correct prototype for window procedure `C++•lpfnWndProc` running this code currently would cause a Win32 error. This is because the when creating the window is requires a valid window procedure.
 ### Window procedure
 The window procedure is a callback that handles window messages for a particular window. When we create a window class we specify a window procedure, `C++•lpfnWndProc`. Before we can successfully create a window instance we must create a valid window procedure. To be a valid windows procedure there is a minimal amount of message codes that it must deal with. If we don’t wish to manually implement the required message codes we can call the Win32 function `C++•DefWindowProc`. In the below code fence my window procedure deals with only one window message `C++•WM_DESTROY` and returns the default behaviour for every other window message.
 
@@ -214,8 +205,7 @@ The message loop continually reads messages from the message queue dispatching w
     }
 ```
 
-
-Here is the created window its not much but it is centred (it is not centred in the screenhsot as the taskbar has been cutoff).
+Without completing the message loop, the window will appear, but then the program will finish executing, and the window will instantly close. Now, with the message loop, here is the created window. It's not much, but it is centered (Note: it is not centered in the screenshot, as the taskbar has been cut off).
 
 ![window](./images/window.png)
 

@@ -20,12 +20,12 @@ const [darkModeState, setDarkMode] = useState(() => {
   };
   return (
     <button onClick={changeDarkMode} className='dark-mode-button'>
-    <span >
-    <div className='circle-left'/>
-    <div className='circle-right'/>
-    <Sun className = 'sun-button'/>
-    <Moon className = 'moon-button'/>
-    </span>
+      <span >
+        <div className='circle-left'/>
+        <div className='circle-right'/>
+        <Sun className = 'sun-button'/>
+        <Moon className = 'moon-button'/>
+      </span>
     </button>
   )
 }

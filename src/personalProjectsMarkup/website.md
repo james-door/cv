@@ -5,7 +5,9 @@ date: 12/12/2023
 ---
 
 # Project: Website
- This page outlines some of the steps I took in creating my portfolio website. I have previously used React in University assignments where I was serving React applications with Express. For this portfolio website I wanted to try [Gatsby](https://www.gatsbyjs.com/) which is mainly used as a static site generator (SSG). When using Gatsby for SSG, static pages are compiled at build-time which means the HTML, CSS, and JavaScript necessary for each page are generated before deployment, rather than being rendered on-the-fly by the server in response to a user's request. 
+This page outlines some of the steps I took in creating my portfolio website. In my university assignments, I previously used React and served React applications with Express. For this portfolio website, I wanted to try [Gatsby](https://www.gatsbyjs.com/), which is mainly used as a static site generator (SSG). Gatsby combines React and GraphQL. When using Gatsby for SSG, static pages are compiled at build time. This means that any data, React templates, and components necessary for each page are generated and compiled into a static HTML file before deployment. This avoids being rendered on-the-fly by the server in response to a user's request
+
+To start the project, I began with a Gatsby starter site, which is a boilerplate which contains the required configuration to use Gatsby. The starter site I used was [gastsby-starter-hello-world](https://www.gatsbyjs.com/starters/gatsbyjs/gatsby-starter-hello-world) which is a bare-bones starter with minimal configuration. The page serves as a discussion of a number of steps I took to create the website from the boilerplate.
 
 
 ## Design
@@ -259,9 +261,9 @@ Plugins are a large part of Gatsby's functionality, there are a number of types 
 ```
 
 ### GraphQL
-As I discuss in the [Mardown](#Markdown) section I use markdown files, stored locally, to hold the contents of the project pages. As a result I have to access these markdown files to display them to the user. Gatsby handles all data using a single GraphQl node. GraphQL is a query language that can be used to request or mutate data from a server or local source, this is an alternative to sending requests to a REST API using endpoints. 
+As I discuss in the [Markdown](#Markdown) section I use Markdown files, stored locally, to hold the contents of the project pages. As a result I have to access these markdown files to display them to the user. Gatsby handles all data using a single GraphQL node. GraphQL is a query language that can be used to request or mutate data from a server or local source. This is an alternative to sending requests to a REST API using endpoints. 
 
-To access Markdown files within my project, they must be integrated into Gatsby's data layer, making them queryable via GraphQL. Gatsby does this by using plugins. To query local source files I used the plugin [gatsby-source-filesytem](https://www.gatsbyjs.com/plugins/gatsby-source-filesystem/). For each instance of the plugin in specified in the `js•gatsby-config.js` the files in`js•path` are added to the GraphQl node. 
+For Markdown files to be accessible within my project, they need to be integrated into Gatsby's data layer. This integration makes them queryable via GraphQL. Gatsby does this by using plugins. To query local source files I used the plugin [gatsby-source-filesystem](https://www.gatsbyjs.com/plugins/gatsby-source-filesystem/). For each instance of the plugin specified in the `js•gatsby-config.js` the files in `js•path` are added to the GraphQl node. 
 
 ```JS {numberLines: 26,filePath:{path:'cv/gatsby-config.js',link:'https://github.com/james-door/cv/blob/main/gatsby-config.js'}}
     {
@@ -278,15 +280,16 @@ To access Markdown files within my project, they must be integrated into Gatsby'
 
 ## Markdown
 ### Generating Project Pages
-Instead of writing HTML for every project page I instead generate the HTML for the project pages from markdown. This has a number of advantages one of these being I found it easier to write the discussion in markdown than in HTML. 
-Just using the `js•gatsby-source-filesystem` the markdown nodes added to the GraphQl layer are treated just a files. In order to be able to better query the markdown, such as accessing the front matter and importantly transform the markdown into HTML, I used a Gatsby transformer plugin. The plugin [gatsby-transformer-remark](https://www.gatsbyjs.com/plugins/gatsby-transformer-remark/) will interpet any markdown files added to the GraphQl node and transform the body content into HTML.
+Instead of writing HTML for every project page, I generate the HTML for the project pages from markdown. This has a number of advantages, one of which is that I find it easier to write the project pages in Markdown than in HTML. For instance this page you are reading is generated from this [Markdown](https://github.com/james-door/cv/blob/main/src/personalProjectsMarkup/website.md)
 
-Gatsby offers a NodeJS environment we can execute code in during the build time in the `js•gatsby-node.js` file. In this file we can query the markdown nodes that the transformer plugin created. In each of the markdown files I store the slug for the page in the frontmatter as `js•URLslug`. For each project page I use a template `js•project-page-template.js` which I discuss in [Generating HTML](#Generating%20HTML).
+By just using the `js•gatsby-source-filesystem`, the markdown nodes added to the GraphQl layer are treated just as files. To better query the markdown, access the front matter, and importantly, transform the markdown into HTML, I used a Gatsby transformer plugin. The plugin [gatsby-transformer-remark](https://www.gatsbyjs.com/plugins/gatsby-transformer-remark/) interprets any markdown files added to the GraphQl node and transforms the body content into HTML.
+
+Gatsby offers a NodeJS environment to can execute code in during the build time in the `js•gatsby-node.js` file. In this file we can query the markdown nodes that the transformer plugin created. In each of the markdown files I store the slug for the page in the frontmatter as `js•URLslug`. For each project page I use a template `js•project-page-template.js` which I discuss in [Generating HTML](#Generating%20HTML).
 
 ```js {numberLines,filePath:{path:'cv/gatsby-node.js',link:'https://github.com/james-door/cv/blob/main/gatsby-node.js'}} 
 const path = require('path');
 
-exports.createPages = async ({graphql,actions})=>{
+exports.createPages = async ({graphql, actions})=>{
 
     const {data} = await graphql(`
     query ProjectPages {
@@ -303,7 +306,7 @@ exports.createPages = async ({graphql,actions})=>{
     data.allMarkdownRemark.nodes.forEach(page=>{
         actions.createPage({
             path: page.frontmatter.URLslug,
-            component: path.resolve("src/templates/project-page-template.js/"),
+            component: path.resolve("src/templates/project-page-template.js"),
             context: {slug:page.frontmatter.URLslug}
         })
         
@@ -327,7 +330,7 @@ export default function PageFormat({data}) {
 }
 export const query = graphql`
 query PageContent($slug: String) { 
-  markdownRemark(frontmatter: {URLslug: {eq: $slug}}, html: {}) {
+  markdownRemark(frontmatter: {URLslug: {eq: $slug}}) {
     headings {
       value
       depth
@@ -337,7 +340,7 @@ query PageContent($slug: String) {
 }
 `
 ```
-The `jsx•HtmlManipulator` uses the library [html-react-parser](https://www.npmjs.com/package/html-react-parser) to perform processing on the HTML to convert them into React elements. This is not required and I could just use the React attribute `jsx•dangerouslySetInnerHTML` to convert the HTML code, which is transformed by gatsby-transformer-remark, into a format that can be displayed. However, I use this to to insert the [bar](#Bar) above the code fences and also to add an ID to each headers for the [navigation bar](#Navigation%20Bar). This code is currently being run in the browser, ideally this would be run during build time. Given that the html-react-parser supports NodeJS and Gatsby offers the `js•gatsby-node.js` file, but I couldn't get it working.
+The `jsx•HtmlManipulator` uses the library [html-react-parser](https://www.npmjs.com/package/html-react-parser) to perform processing on the HTML to convert them into React elements. This is not required and I could just use the React attribute `jsx•dangerouslySetInnerHTML` to convert the HTML code, which is transformed by gatsby-transformer-remark, into a format that can be displayed. However, I use this to insert the [bar](#Bar) above the code fences and also to add an ID to each headers for the [navigation bar](#Navigation%20Bar). This code is currently being run in the browser, ideally this would be run during build time. Given that the html-react-parser supports NodeJS and Gatsby offers the `js•gatsby-node.js` file, but I couldn't get it working.
 
 ```JSX
 const HtmlManipulator = (htmlContent) => {
@@ -516,7 +519,7 @@ To store the state of `jsx•darkModeState` between sessions I use the Web Stora
       }, [darkModeState]);
 ```
 
-The syntax highighter allows me to change between different Visual Studio Code themes. Using the `js•theme` option in the gatsby-remark-vscode plugin 
+The syntax highighter allows me to change between different Visual Studio Code themes. Using the `js•theme` option in the gatsby-remark-vscode plugin allows me to set  a number of parent selectors. When the `html•<html>` attribute is set to `css•light` then the code fences will use the `css•Solarized Light` theme. When its attriubte is set to `•dark` the code fences will use the `css•Solarized Dark` theme.
 
 ```JS {numberLines: 53,filePath: {path:'cv/gatsby-config.js',link:'https://github.com/james-door/cv/blob/main/gatsby-config.js'}}
   theme:{
@@ -530,8 +533,11 @@ The syntax highighter allows me to change between different Visual Studio Code t
 
 
 ### Button
-The dark mode button in the bottom right of the page allow the user to change the value of 
+The dark mode button in the bottom right of the page allow the user to change the value of `css•colour-theme` attibute. whenever thebutton triggered the state of React variable `jsx•darkModeState` is inverted.
 
+The button is made up of a two SVGs, `jsx•<Sun>` and •`jsx•<Moon>`, which the plugin gatsby-plugin-react-svg transforms into React components. And two circles that either obscure the `jsx•<Sun>` or `jsx•<Moon>` depending on the which theme is active.   
+
+The style for button is heavily inspired that dark mode button on this [website](https://www.3dgep.com/). 
 
 ```JSX {numberLines: 16,filePath:{path:'cv/src/components/DarkModeButton.js',link:'https://github.com/james-door/cv/blob/main/src/components/DarkModeButton.js'}}}
   const changeDarkMode = () => {
@@ -541,43 +547,51 @@ The dark mode button in the bottom right of the page allow the user to change th
   };
   return (
     <button onClick={changeDarkMode} className='dark-mode-button'>
-    <span >
-    <div className='circle-left'/>
-    <div className='circle-right'/>
-    <Sun className = 'sun-button'/>
-    <Moon className = 'moon-button'/>
-    </span>
+      <span >
+        <div className='circle-left'/>
+        <div className='circle-right'/>
+        <Sun className = 'sun-button'/>
+        <Moon className = 'moon-button'/>
+      </span>
     </button>
   )
 ```
+The button has `css•position: sticky` so that it is treated like a fixed element. It will stick to the bottom of the viewport, with a bottom gap set to `css•0.5rem`. When the button reaches the end of its container, `css•content-column`, it will switch to static behavior. This avoids it overlapping with the footer.
 
-
-
-
-The button that toggles between dark and light mode, in the bottom left, is an SVG loaded using the Gatsby plugin [gatsby-plugin-react-svg](https://www.gatsbyjs.com/plugins/gatsby-plugin-react-svg). This plugin converts SVG files from a specified directory into importable React components. I specified in the plugin options that this the src/assets directory. The inline stroke attributes was removed from the in the [orignal SVG](https://www.reshot.com/free-svg-icons/item/sun-energy-WL9MVB4TYD/). And set it using the custom property `CSS•--dark-mode-button-colour`. This allowed me to avoiud using the !important property to override the in-line style.
-
-```CSS {numberLines: 10}
-.dark-mode-button {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    z-index: 1;
-    width: 5rem; 
-    height: 5rem; 
+The width and height of the `css•<span>` and the two circles is scaled by the custom property `css•--dark-button-scale`. The button fits around the `html•<span>` element, and both SVGs are flex children of the `html•<span>` element, with both flex-grow and flex-shrink properties. The two circles have their size and positioned calculated with `css•--dark-button-scale`. When `css•colour-theme` is `css•light` the colour of the circle over the moon is transparent. When `css•colour-theme` is `css•dark` the colour of the circle over the sun is transparent.
+ 
+```CSS
+ .dark-mode-button {
+    position: sticky;
+    right: 0;
+    bottom: 0.5rem;
+    z-index: 2;
     background-color: transparent;
+    border-color: transparent;
     cursor: pointer;
-    transition:  transform 0.3s;
-    transition-timing-function: ease-out;
-    stroke: var(--dark-mode-button-colour);
+    fill: var(--dark-mode-button-colour);
+    margin-left: auto; 
+    margin-right: 0.6rem;   
+} 
 
-}
-.dark-mode-button:hover {
-    transform: scale(1.2);
+ .dark-mode-button span {
+    position: relative;
+    display: flex;
+    background-color: var(--dark-mode-button-background-colour);
+    border-radius: calc(50px*var(--dark-button-scale));
+    width: calc(200px*var(--dark-button-scale));
+    height: calc(100px*var(--dark-button-scale));
+    justify-content: center;
+    align-items: center;
+
+    .moon-button, .sun-button {
+    flex: 1;
+    margin: 5px 5px;
+    max-width: 100%;
+    max-height: 100%;
+    stroke: var(--dark-mode-button-colour);
 }
 ```
-
-
-
 
 
 

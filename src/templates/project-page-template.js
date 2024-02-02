@@ -73,7 +73,7 @@ export default function PageFormat({data}) {
 
 export const query = graphql`
 query PageContent($slug: String) {
-  markdownRemark(frontmatter: {URLslug: {eq: $slug}}, html: {}) {
+  markdownRemark(frontmatter: {URLslug: {eq: $slug}}) {
     headings {
       value
       depth
