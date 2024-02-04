@@ -14,26 +14,27 @@ To start the project, I began with a Gatsby starter site, which is a boilerplate
 ### Body text
 A common guideline for readability I found was to have between 30 and 40 characters per line on mobile and 45 to 80 characters per line on larger displays. The number of characters per line is limited by the width of the `css•content-column` element which each body element is a child of. The `css•max-width` of the column is calculated using `css•65ch`. Which gives the width required to fit 65 zero characters, which gives approximately 65 characters per line. The `css•max-width` calculation also takes into account the padding on either side of the body content so the dark mode button can fit. 
 
-```CSS {numberLines: 65,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
+```CSS {numberLines: 63,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
 .content-column {
     font-family: "General Sans", sans-serif;
     font-size: 1rem;
     max-width: calc(65ch + 2 * 200px * var(--dark-button-scale));
     width:100%;
-    padding-inline: calc(200px*var(--dark-button-scale) + 0.5rem);
+    padding-inline: calc(200px*var(--dark-button-scale) + 0.8rem);
     box-sizing: border-box; 
     overflow-wrap: break-word;
     flex-shrink: 1; 
+    position: relative;
 }
 ```
 When the width of the display is below `css•650px` then I change the `css•max-width` to be calculated using `css•35ch`, which is more readable for smaller displays. Moreover, the padding is adjusted as the dark mode button is flipped from being horizontal to vertical so the body content can have more room.
 
 
-```CSS {numberLines: 82,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
+```CSS {numberLines: 81,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
 @media (max-width: 650px) {
     .content-column{
-        max-width: calc(35ch + 2 *(100px * var(--dark-button-scale) +0.5rem));
-        padding-inline: calc(100px*var(--dark-button-scale) + 0.5rem); 
+        max-width: calc(35ch + 2 *(100px * var(--dark-button-scale)));
+        padding-inline: calc(100px*var(--dark-button-scale) + 0.8rem); 
     }
 }
 ```
@@ -42,7 +43,7 @@ The navigation bar on the left of the project pages takes up too much space for 
 
  Additionally, when the display is not tall enough or when the browser window is resized, parts of the header may become inaccessible, especially on longer project pages. To deal with this I added the property `css•overflow: auto` to the navigation bar's class. 
 
-```CSS {numberLines: 122,filePath:{path:'cv/src/styles/project.module.css',link:'https://github.com/james-door/cv/blob/main/src/styles/project.module.css'}}
+```CSS {numberLines: 114,filePath:{path:'cv/src/styles/project.module.css',link:'https://github.com/james-door/cv/blob/main/src/styles/project.module.css'}}
 @media (max-width: 1200px) {
     .headerNav {
         display: none;
@@ -60,7 +61,7 @@ The navigation bar on the left of the project pages takes up too much space for 
 ```
 Unlike the navigation column I want the dark mode button to be present regardless of the type of display and window size. Equivalently to the navigation bar the dark mode button also has a relative position. To avoid the dark mode button overlapping with the rest of the body I added padding to the `css•content-column` calculated from the size of the dark mode button as discussed in the [body text](#Body%20text) section. However, for narrower viewports, the padding required for the full-sized button does not leave sufficient space for the text. At css•max-width: 650px, the media query below changes the dark mode button, halving its width and, as a result, quartering the padding required.
 
-```CSS {numberLines: 265,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
+```CSS {numberLines: 252,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
  @media (max-width: 650px) {
     .dark-mode-button span {
         flex-direction: column;
@@ -80,7 +81,7 @@ Unlike the navigation column I want the dark mode button to be present regardles
 ```
 For particularly small viewports the horizontal dark mode button is still too wide. In these cases I use a media query to reduce the scale of the button using the custom property `css• --dark-button-scale`.
 
-```CSS {numberLines: 282}
+```CSS {numberLines: 269,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
 @media (max-width: 400px) {
     :root {
         --dark-button-scale: 0.3;
@@ -174,18 +175,18 @@ The golden ratio is quite large when viewed on smaller displays such as mobile. 
 
 This switch in ratio is done using the following media query, when the width of the screen is below below `css•16px`. 
 
-```CSS {numberLines: 34, filePath: {path: 'cv/src/styles/project.module.css',link:'https://github.com/james-door/cv/blob/main/src/styles/project.module.css'}}
+```CSS {numberLines: 31, filePath: {path: 'cv/src/styles/project.module.css',link:'https://github.com/james-door/cv/blob/main/src/styles/project.module.css'}}
 @media (max-width: 500px){
-    .header h1{
+    .projectBody h1{
         font-size: 3.157rem;
     }
-    .header h2{
+    .projectBody h2{
         font-size: 2.369rem;
-    }
-    .header h3{
+    }:before
+    .projectBody h3{
         font-size: 1.777rem;
     }
-    .header h4{
+    .projectBody h4{
         font-size: 1.333rem;
     }
 }
@@ -210,9 +211,10 @@ To have consistent global styling for the hyperlinks I specify the following glo
 
 ```CSS {numberLines:104,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
 body a{
-    text-decoration: none;
     white-space: nowrap;
+    text-decoration: none;
 }
+
 body a::after{
     margin: -3px 0;
     content: '';
@@ -226,6 +228,7 @@ body a::after{
     transform: translateX(-50%); 
     border-radius: 10px;
 }
+
 body a:hover::after{
     width: 100%;
 }
@@ -318,19 +321,20 @@ exports.createPages = async ({graphql, actions})=>{
 ### Generating HTML
  For each project page I use the template`js•project-page-template.js` to generate it. In Gatsby in an ES6 environment when we export a GraphQL query from a page component Gatsby automatically executes the query during the build process injecting the query result into the pages component's props. In the below code `jsx•query` is exported which injects parsed content into the `jsx•data` prop. I then use the headers to create the [navigation column](#Navigation%20Column) component. 
  
-```jsx {numberLines:59, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}}
+```jsx {numberLines:63, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}}
 export default function PageFormat({data}) {
   return (
     <Layout>
+      <section className={styles.projectBody}>
       <PageNavigationColumn HeadingData={data.markdownRemark.headings}/>
-      <section className={styles.header}>
        {HtmlManipulator(data.markdownRemark.html)}
       </section>
     </Layout>
   )
 }
+
 export const query = graphql`
-query PageContent($slug: String) { 
+query PageContent($slug: String) {
   markdownRemark(frontmatter: {URLslug: {eq: $slug}}) {
     headings {
       value
@@ -343,10 +347,11 @@ query PageContent($slug: String) {
 ```
 The `jsx•HtmlManipulator` uses the library [html-react-parser](https://www.npmjs.com/package/html-react-parser) to perform processing on the HTML to convert them into React elements. This is not required and I could just use the React attribute `jsx•dangerouslySetInnerHTML` to convert the HTML code, which is transformed by gatsby-transformer-remark, into a format that can be displayed. However, I use this to insert the [bar](#Bar) above the code fences and also to add an ID to each of the headers for the [navigation bar](#Navigation%20Bar). This code is currently being run in the browser. Ideally, this would be run during build time, given that the html-react-parser supports NodeJS and Gatsby offers the `js•gatsby-node.js` file, but I couldn't get it working.
 
-```JSX
+```JSX {numberLines:33, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}}
 const HtmlManipulator = (htmlContent) => {
   return parse(htmlContent, {
     transform(reactNode, domNode) {
+    
       if (domNode.type === 'tag' && ['h1', 'h2', 'h3'].includes(domNode.name)){
         return (
           React.createElement(
@@ -384,7 +389,7 @@ I wanted a syntax highlighter to present my code in a more readable fashion. For
 
 The plugin exposes a number of CSS classes that can be used to style the code fences. The main one being `CSS•grvsc-container` which is at the top of the hierarchy. I use this class to set a monospaced font for the code in the fence. The rest of the classes in the below code fence adjust the position of the code within its fence.
 
-```CSS {numberLines : 332,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
+```CSS {numberLines : 333,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
 .grvsc-container{
     margin-top: 0rem; 
     margin-bottom: 1rem; 
@@ -426,36 +431,29 @@ The syntax highlighter plugin I used came with no options to add an indication o
 
 One feature of gatsby-remark-vscode allows adding a custom class to `CSS•grvsc-container`. The custom class is added by specifying the name of the class as the value of the `JS•wrapperClassName` property of the plugin's option object. This class name can optionally be returned by a JS function. This function has two useful parameters, `JS•parsedOptions` which allows us to pass a custom object from the markdown and `JS•language` which is the language of the code fence. I pass the custom `JS•filePath` object from the markdown which specifies the file path and a link to the Github page. Using this information I set the custom class `CSS•grvsc-container` to contain this information, using `JS•__` as a delimiter. Also I appended the `JS•numberLines` property to the Github URL with the fragment identifier #L, which Github uses to allow jumping to a particular line of code.
 
-```JS {numberLines: 51, filePath: {path:'cv/gatsby-config.js',link: 'https://github.com/james-door/cv/blob/main/gatsby-config.js'}}
-        wrapperClassName: ({ parsedOptions, language, markdownNode, node }) => {
-      const filePath = parsedOptions.filePath;
-      if (filePath) {
-        return language.toUpperCase()+"__"+filePath.path +"__"+filePath.link+"#L"+parsedOptions.numberLines;
-      }
-      return language.toUpperCase();
-    }
+```JS {numberLines: 60, filePath: {path:'cv/gatsby-config.js',link: 'https://github.com/james-door/cv/blob/main/gatsby-config.js'}}
+    wrapperClassName: ({ parsedOptions, language, markdownNode, node }) => {
+         const filePath = parsedOptions.filePath;
+          if (filePath) {
+             return `${language.toUpperCase()}__${filePath.path}__${filePath.link}#L${parsedOptions.numberLines}`;
+          }
+          return language.toUpperCase();
+          }
 ```
 To create the bar, I locate DOM nodes with the class jsx•grvsc-container in the template, and above each of these elements, I insert the language and file link. 
 
-```jsx {numberLines: 34, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}}
-const HtmlManipulator = (htmlContent) => {
-  return parse(htmlContent, {
-    transform(reactNode, domNode, index) {
-      if (domNode.attribs && domNode.attribs.class && domNode.attribs.class.includes('grvsc-container')) {
+```jsx {numberLines: 46, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}}
+      else if (domNode.attribs && domNode.attribs.class && domNode.attribs.class.includes('grvsc-container')) {
       return( 
         <>
-        <div className={styles.test}>{FileLink(domNode.attribs.class)}</div>
+        <div className={styles.codeFenceBar}>{FileLink(domNode.attribs.class)}</div>
           {reactNode}  
         </>
         );
       }
       else{
-        return(<>{reactNode} </>)
+        return(<>{reactNode}</>)
       }
-    },
-  });
-};
-
 ```
 
 ## Dark Mode
@@ -508,16 +506,16 @@ To store the state of `jsx•darkModeState` between sessions I use the Web Stora
 
 
 ```jsx {numberLines: 5,filePath:{path:'cv/src/components/DarkModeButton.js',link:'https://github.com/james-door/cv/blob/main/src/components/DarkModeButton.js'}}
-    const [darkModeState, setDarkMode] = useState(() => {
-        if (typeof window !== 'undefined') {
-          return localStorage.getItem('darkModeState') || 'light';
-        }
-        return 'light';
-      });
-    
-      useEffect(() => {
-        document.documentElement.setAttribute('colour-theme', darkModeState);
-      }, [darkModeState]);
+const [darkModeState, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('darkModeState') || 'light';
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('colour-theme', darkModeState);
+  }, [darkModeState]);
 ```
 
 The syntax highighter allows me to change between different Visual Studio Code themes. Using the `js•theme` option in the gatsby-remark-vscode plugin allows me to set a number of parent selectors. When the `html•<html>` attribute is set to `css•light` then the code fences will use the `css•Solarized Light` theme. When its attriubte is set to `•dark` the code fences will use the `css•Solarized Dark` theme.
@@ -561,7 +559,7 @@ The button has `css•position: sticky` so that it is treated like a fixed eleme
 
 The width and height of the `css•<span>` and the two circles are scaled by the custom property `css•--dark-button-scale`. The button fits around the `html•<span>` element and both SVGs are flex children of the `html•<span>` element, with both flex-grow and flex-shrink properties. The two circles have their size and position calculated with `css•--dark-button-scale`. When `css•colour-theme` is `css•light` the colour of the circle over the moon is transparent. When `css•colour-theme` is `css•dark` the colour of the circle over the sun is transparent.
  
-```CSS
+```CSS {numberLines : 198,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
  .dark-mode-button {
     position: sticky;
     right: 0;
@@ -584,8 +582,9 @@ The width and height of the `css•<span>` and the two circles are scaled by the
     height: calc(100px*var(--dark-button-scale));
     justify-content: center;
     align-items: center;
+} 
 
-    .moon-button, .sun-button {
+ .moon-button, .sun-button {
     flex: 1;
     margin: 5px 5px;
     max-width: 100%;
@@ -607,9 +606,8 @@ In order to make navigation in project pages easier, for each project's page, a 
 
  I use the html-react-parser to transform the `CSS•<h2>` and `CSS•<h3>` elements so that each has an ID corresponding to its header text, as seen in the below React code. Fragment identifiers must be unique; thus, each header must have a unique identifier. If I felt I needed repeated headers for different depth I could append the depth to the ID.
 
-```JSX {numberLines: 32, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}} 
-    transform(reactNode, domNode) {
-      if (domNode.type === 'tag' && ['h2', 'h3'].includes(domNode.name)){
+```JSX {numberLines: 37, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}} 
+   if (domNode.type === 'tag' && ['h1', 'h2', 'h3'].includes(domNode.name)){
         return (
           React.createElement(
             domNode.name,
@@ -626,16 +624,19 @@ The navigation column is a React component `JSX•PageNavigationColumn`. The com
  export default function PageNavigationColumn(props) {
   const [activeHeader, setActiveHeader] = useState('');
                             ...
-  const FormatHeadingList = (headingList) => { //L45
+    const FormatHeadingList = (headingList) => {//37
     let style = '';
+    //Exclude h1
     if (headingList.depth === 1) {
       return <></>;
     }
+    //If selected use the activeHeader style
     if (headingList.value === activeHeader) {
       style = styles.selectedHeader;
     }
     return (
-      <li className={`${styles[`depth${headingList.depth}`]} ${style}`}>
+      
+      <li key={headingList.value.replace(/[^a-zA-Z0-9]/g, '')+"-"+"headingList.depth"} className={`${styles[`depth${headingList.depth}`]} ${style}`} >
         <a href={`#${headingList.value}`}>
           {headingList.value}
         </a>
@@ -651,6 +652,7 @@ The navigation column is a React component `JSX•PageNavigationColumn`. The com
     </ul>
     </div>
   );
+}
 }
 ```
 
