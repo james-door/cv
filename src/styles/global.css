@@ -63,7 +63,7 @@
 .content-column {
     font-family: "General Sans", sans-serif;
     font-size: 1rem;
-    max-width: calc(65ch + 2 * 200px * var(--dark-button-scale));
+    max-width: calc(70ch + 2 * 200px * var(--dark-button-scale));
     width:100%;
     padding-inline: calc(200px*var(--dark-button-scale) + 0.8rem);
     box-sizing: border-box; 
@@ -90,9 +90,9 @@ html{
 }
 
 body{
-    background-color: var(--background-colour);
-    color: var(--paragraph-text-colour);
-    line-height: 1.75;
+    background-color: var(--background-colour)!important;
+    color: var(--paragraph-text-colour)!important;
+    line-height: 1.75!important;
     
 }
 
@@ -359,11 +359,8 @@ footer svg {
 .custom-inline-code span{
   color:var(--inline-code-colour) !important;
   font-family: 'General Sans';
+  font-size: 1rem;
 }
-
-
-
-
 
 span.gatsby-resp-image-wrapper {
     padding: 10px 0;
@@ -383,5 +380,13 @@ a.gatsby-resp-image-link:hover{
 a.gatsby-resp-image-link:after{
     display: none;
 
+}
+
+/*Video embed*/
+.container{
+    padding-left: 0!important;
+    padding-right: 0!important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 

@@ -195,3 +195,9 @@
 .projectBody .gatsby-resp-image-link a {
     display: none;
 }
+
+.projectBody p 
+{
+    margin-bottom: 0;
+
+}

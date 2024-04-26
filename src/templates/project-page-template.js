@@ -7,7 +7,9 @@ import parse, { domToReact } from 'html-react-parser';
 
 import PageNavigationColumn from "../components/PageNavigationColumn"
 
+import LocalVideoEmbed from '../components/LocalVideoEmbed';
 
+import "katex/dist/katex.min.css";
 
 const FileLink = (value) =>{
   value = value.split(' ')[1];
@@ -50,6 +52,13 @@ const HtmlManipulator = (htmlContent) => {
           {reactNode}  
         </>
         );
+      }
+      else if(domNode.type === 'tag' && ['video'].includes(domNode.name)){
+        return( 
+          <>
+          <LocalVideoEmbed src ={domNode.attribs.src}></LocalVideoEmbed>
+          </>
+          );
       }
       else{
         return(<>{reactNode}</>)

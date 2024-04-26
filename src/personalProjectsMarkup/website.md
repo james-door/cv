@@ -59,7 +59,7 @@ The navigation bar on the left of the project pages takes up too much space for 
     overflow: auto;
 }
 ```
-Unlike the navigation column I want the dark mode button to be present regardless of the type of display and window size. Equivalently to the navigation bar the dark mode button also has a relative position. To avoid the dark mode button overlapping with the rest of the body I added padding to the `css•content-column` calculated from the size of the dark mode button as discussed in the [body text](#Body%20text) section. However, for narrower viewports, the padding required for the full-sized button does not leave sufficient space for the text. At css•max-width: 650px, the media query below changes the dark mode button, halving its width and, as a result, quartering the padding required.
+Unlike the navigation column I want the dark mode button to be present regardless of the type of display and window size. Equivalently to the navigation bar the dark mode button also has a relative position. To avoid the dark mode button overlapping with the rest of the body I added padding to the `css•content-column` calculated from the size of the dark mode button as discussed in the [body text](#Body%20text) section. However, for narrower viewports, the padding required for the full-sized button does not leave sufficient space for the text. At `css•max-width`: 650px, the media query below changes the dark mode button, halving its width and, as a result, quartering the padding required.
 
 ```CSS {numberLines: 252,filePath:{path:'cv/src/styles/global.css',link:'https://github.com/james-door/cv/blob/main/src/styles/global.css'}}
  @media (max-width: 650px) {
@@ -440,7 +440,7 @@ One feature of gatsby-remark-vscode allows adding a custom class to `CSS•grvsc
           return language.toUpperCase();
           }
 ```
-To create the bar, I locate DOM nodes with the class jsx•grvsc-container in the template, and above each of these elements, I insert the language and file link. 
+To create the bar, I locate DOM nodes with the class `jsx•grvsc-container` in the template, and above each of these elements, I insert the language and file link. 
 
 ```jsx {numberLines: 46, filePath:{path:'cv/src/templates/project-page-template.js', link:'https://github.com/james-door/cv/blob/main/src/templates/project-page-template.js'}}
       else if (domNode.attribs && domNode.attribs.class && domNode.attribs.class.includes('grvsc-container')) {
@@ -518,7 +518,7 @@ const [darkModeState, setDarkMode] = useState(() => {
   }, [darkModeState]);
 ```
 
-The syntax highighter allows me to change between different Visual Studio Code themes. Using the `js•theme` option in the gatsby-remark-vscode plugin allows me to set a number of parent selectors. When the `html•<html>` attribute is set to `css•light` then the code fences will use the `css•Solarized Light` theme. When its attriubte is set to `•dark` the code fences will use the `css•Solarized Dark` theme.
+The syntax highighter allows me to change between different Visual Studio Code themes. Using the `js•theme` option in the gatsby-remark-vscode plugin allows me to set a number of parent selectors. When the `html•<html>` attribute is set to `css•light` then the code fences will use the `css•Solarized Light` theme. When its attriubte is set to `css•dark` the code fences will use the `css•Solarized Dark` theme.
 
 ```JS {numberLines: 53,filePath: {path:'cv/gatsby-config.js',link:'https://github.com/james-door/cv/blob/main/gatsby-config.js'}}
   theme:{
@@ -534,7 +534,7 @@ The syntax highighter allows me to change between different Visual Studio Code t
 ### Button
 The dark mode button in the bottom right of the page allows the user to change the value of `css•colour-theme` attribute. Whenever the button is triggered the state of the React variable `jsx•darkModeState` is inverted.
 
-The button is made up of a two SVGs, `jsx•<Sun>` and •`jsx•<Moon>`, which the plugin gatsby-plugin-react-svg transforms into React components. The two circles either obscure the `jsx•<Sun>` or `jsx•<Moon>` depending on which theme is active.   
+The button is made up of a two SVGs, `jsx•<Sun>` and `jsx•<Moon>`, which the plugin gatsby-plugin-react-svg transforms into React components. The two circles either obscure the `jsx•<Sun>` or `jsx•<Moon>` depending on which theme is active.   
 
 The style for this button is heavily inspired by the dark mode button on this [website](https://www.3dgep.com/). 
 
