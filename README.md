@@ -38,11 +38,11 @@ Next, run the deployment script in in the `package.json` file:
 
 ```json
 "scripts": {
-  "deploy": "gatsby build && gh-pages -d public"
+  "deploy": "gatsby clean && gatsby build && gh-pages -d public"
 }
 ```
 
-This script builds the site using `gatsby build` and then deploys it to GitHub Pages using the `gh-pages` package. To deploy the site, run:
+This script builds the site using `gatsby build` and then deploys it to GitHub Pages using the `gh-pages` package. In order for the path prefixes to work the Gatsby cache nears to be cleared before deploying. To deploy the site, run:
 
 ```sh
 npm run deploy

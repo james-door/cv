@@ -49,6 +49,11 @@
 }
 
 /*Table style*/
+
+.projectBody caption{
+    caption-side: top;
+    text-align: center;
+}
 .projectBody table {
     --border: 2px solid var(--dividing-bar-colour);
     border-radius: 10px;
