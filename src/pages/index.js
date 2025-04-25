@@ -32,18 +32,7 @@ export default function Home({data}) {
   return(
 
     <Layout>
-      <section className={styles.header}>
-        <h2>
-          About Me
-        </h2>
-        <p>
-          Hello, my name is James. I enjoy learning about new languages and APIs.    
-          I am currently in my final year at QUT, studying Computer and Software Systems.
-          Throughout this course, I have gained experience in web development. This 
-          inspired me to start creating this website, designed to showcase and detail 
-          some of my personal projects. 
-        </p>
-  
+      <section className={styles.header}>  
         <h2>Projects: </h2>
         <ol>
           {projectList}
